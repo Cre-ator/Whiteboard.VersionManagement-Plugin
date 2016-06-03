@@ -1,3 +1,9 @@
 <?php
 
 $s_plugin_VersionManagement_menu_title = 'Versionsverwaltung';
+
+$s_plugin_VersionManagement_version_view_table_head_version = 'Version';
+$s_plugin_VersionManagement_version_view_table_head_released = 'Veröffentlicht';
+$s_plugin_VersionManagement_version_view_table_head_obsolete = 'Veraltet';
+$s_plugin_VersionManagement_version_view_table_head_date = 'Datumsstempel';
+$s_plugin_VersionManagement_version_view_table_head_description = 'Beschreibung';
