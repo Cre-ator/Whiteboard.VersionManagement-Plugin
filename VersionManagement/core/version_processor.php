@@ -22,6 +22,11 @@ class version_processor
 
    public function get_version_name ()
    {
+      return version_get_field ( $this->version_id, 'version' );
+   }
+
+   public function get_version_full_name ()
+   {
       return version_full_name ( $this->version_id );
    }
 

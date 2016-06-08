@@ -81,7 +81,7 @@ class VersionManagementPlugin extends MantisPlugin
          && plugin_config_get ( 'show_menu' ) && $this->get_user_has_level ()
       )
       {
-         return '<a href="' . plugin_page ( 'version_view' ) . '">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+         return '<a href="' . plugin_page ( 'version_view' ) . '&edit=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
       }
       return null;
    }
