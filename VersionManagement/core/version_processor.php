@@ -50,4 +50,14 @@ class version_processor
    {
       return version_get_field ( $this->version_id, 'description' );
    }
+
+   public function get_version_project_id ()
+   {
+      return version_get_field ( $this->version_id, 'project_id' );
+   }
+
+   public function delete_version ()
+   {
+      version_remove ( $this->version_id );
+   }
 }
