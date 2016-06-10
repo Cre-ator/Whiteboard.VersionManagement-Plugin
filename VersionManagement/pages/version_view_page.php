@@ -10,7 +10,9 @@ function process_page ()
    html_page_top1 ( plugin_lang_get ( 'menu_title' ) );
    html_page_top2 ();
 
-   if ( plugin_is_installed ( 'WhiteboardMenu' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' ) )
+   if ( plugin_is_installed ( 'WhiteboardMenu' ) &&
+      file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' )
+   )
    {
       require_once WHITEBOARDMENU_CORE_URI . 'whiteboard_print_api.php';
       $whiteboard_print_api = new whiteboard_print_api();
@@ -20,22 +22,22 @@ function process_page ()
    echo '<div align="center">';
    echo '<hr size="1" width="100%" />';
 
-   if ( $_GET[ "edit" ] == 1 )
-   {
-      echo '<form action="' . plugin_page ( 'version_view_update' ) . '" method="post">';
-   }
    process_table ();
-   if ( $_GET[ "edit" ] == 1 )
-   {
-      echo '</form>';
-   }
 }
 
 function process_table ()
 {
    open_table ();
    print_table_head ();
+   if ( $_GET[ "edit" ] == 1 )
+   {
+      echo '<form action="' . plugin_page ( 'version_view_update' ) . '" method="post">';
+   }
    print_table_body ();
+   if ( $_GET[ "edit" ] == 1 )
+   {
+      echo '</form>';
+   }
    close_table ();
 }
 
@@ -59,6 +61,23 @@ function print_table_head ()
    echo '<tr>';
    echo '<td class="form-title" colspan="4">';
    echo plugin_lang_get ( 'version_view_title' );
+   echo '</td>';
+   echo '<td>';
+   if ( $_GET[ "obsolete" ] == 1 )
+   {
+      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=0">';
+      echo '<span class="input">';
+      echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_hide_obsolete' ) . '">';
+   }
+   else
+   {
+      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=1">';
+      echo '<span class="input">';
+      echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_show_obsolete' ) . '">';
+   }
+   echo '</span>';
+   echo '</a>';
+   echo '</td>';
    echo '</tr>';
 
    echo '<tr class="row-category2">';
@@ -80,7 +99,7 @@ function print_table_body ()
    echo '<tbody>';
 
    $current_project_id = helper_get_current_project ();
-   $versions = version_get_all_rows_with_subs ( $current_project_id, null, null );
+   $versions = version_get_all_rows_with_subs ( $current_project_id, null, get_obsolete_value () );
 
    foreach ( $versions as $version )
    {
@@ -107,8 +126,9 @@ function print_version_name_column ( version_object $version_object )
    {
       echo '<label for="proj-version-new-version">';
       echo '<span class="input" style="width:100%;">';
-      echo '<input type="text" id="proj-version-new-version" name="version_name[]"
-                      style="width:100%;" maxlength="64" value="' . string_attribute ( $version_object->get_version_name () ) . '" />';
+      echo '<input type="text" id="proj-version-new-version" name="version_name[]" 
+         style="width:100%;" maxlength="64" value="' .
+         string_attribute ( $version_object->get_version_name () ) . '" />';
       echo '</span>';
       echo '</label>';
    }
@@ -125,8 +145,8 @@ function print_version_released_column ( version_object $version_object )
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<span class="checkbox">';
-      echo '<input type="checkbox" id="proj-version-released" name="version_released[]"
-                      value="' . $version_object->get_version_id () . '"';
+      echo '<input type="checkbox" id="proj-version-released" name="version_released[]" value="' .
+         $version_object->get_version_id () . '"';
       check_checked ( $version_object->get_version_released (), ON );
       echo '/>';
       echo '</span>';
@@ -144,8 +164,8 @@ function print_version_obsolete_column ( version_object $version_object )
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<span class="checkbox">';
-      echo '<input type="checkbox" id="proj-version-obsolete" name="version_obsolete[]"
-                      value="' . $version_object->get_version_id () . '"';
+      echo '<input type="checkbox" id="proj-version-obsolete" name="version_obsolete[]" value="' .
+         $version_object->get_version_id () . '"';
       check_checked ( $version_object->get_version_obsolete (), ON );
       echo '/>';
       echo '</span>';
@@ -164,8 +184,9 @@ function print_version_date_order_column ( version_object $version_object )
    {
       echo '<label for="proj-version-date-order">';
       echo '<span class="input">';
-      echo '<input type="text" id="proj-version-date-order" name="version_date_order[]" class="datetime" size="15"
-                      value="' . $version_object->get_version_date_order () . '" />';
+      echo '<input type="text" id="proj-version-date-order" name="version_date_order[]"
+         class="datetime" size="15" value="' .
+         $version_object->get_version_date_order () . '" />';
       echo '</span>';
       echo '</label>';
    }
@@ -182,7 +203,8 @@ function print_version_description_column ( version_object $version_object )
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<span class="text">';
-      echo '<input type="text" id="proj-version-description" name="version_description[]" value="' . string_attribute ( $version_object->get_version_description () ) . '"/>';
+      echo '<input type="text" id="proj-version-description" name="version_description[]" value="' .
+         string_attribute ( $version_object->get_version_description () ) . '"/>';
       echo '</span>';
    }
    else
@@ -198,7 +220,8 @@ function print_version_action_column ( version_object $version_object )
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<td>';
-      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_delete' ) . '&amp;version_id=' . $version_id . '">';
+      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_delete' ) .
+         '&amp;version_id=' . $version_id . '">';
       echo '<span class="input">';
       echo '<input type="button" value="' . lang_get ( 'delete_link' ) . '" />';
       echo '</span>';
@@ -234,13 +257,13 @@ function print_foot_row ()
    echo '<td colspan="5" class="center">';
    if ( $_GET[ "edit" ] == 1 )
    {
-      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_update' ) . '">';
+      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_update' ) . '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
       echo '<span class="input">';
       echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit_done' ) . '">';
    }
    else
    {
-      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=1">';
+      echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
       echo '<span class="input">';
       echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit' ) . '">';
    }
@@ -248,4 +271,15 @@ function print_foot_row ()
    echo '</a>';
    echo '</td>';
    echo '</tr>';
+}
+
+function get_obsolete_value ()
+{
+   $obsolete = false;
+   if ( $_GET[ 'obsolete' ] == 1 )
+   {
+      $obsolete = null;
+   }
+
+   return $obsolete;
 }

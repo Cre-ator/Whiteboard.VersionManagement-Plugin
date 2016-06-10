@@ -12,5 +12,8 @@ $s_plugin_VersionManagement_version_view_table_head_date = 'Datumsstempel';
 $s_plugin_VersionManagement_version_view_table_head_description = 'Beschreibung';
 $s_plugin_VersionManagement_version_view_table_head_action = 'Aktion';
 
+$s_plugin_VersionManagement_version_view_table_head_show_obsolete = 'Veraltete Versionen einblenden';
+$s_plugin_VersionManagement_version_view_table_head_hide_obsolete = 'Veraltete Versionen ausblenden';
+
 $s_plugin_VersionManagement_version_view_table_foot_edit = 'Versionen bearbeiten';
 $s_plugin_VersionManagement_version_view_table_foot_edit_done = 'Änderungen bestätigen';

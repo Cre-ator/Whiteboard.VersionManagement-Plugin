@@ -59,7 +59,7 @@ function process_page ()
 
       /** redirect to view page */
       form_security_purge ( 'plugin_VersionManagement_version_view_update' );
-      print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&amp;edit=0' );
+      print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&edit=0&obsolete=0' );
    }
 }
 
