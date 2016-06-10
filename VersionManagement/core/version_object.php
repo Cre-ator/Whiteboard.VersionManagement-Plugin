@@ -19,11 +19,6 @@ class version_object
       return version_get_field ( $this->version_id, 'version' );
    }
 
-   public function get_version_full_name ()
-   {
-      return version_full_name ( $this->version_id );
-   }
-
    public function get_version_released ()
    {
       return version_get_field ( $this->version_id, 'released' );
@@ -36,8 +31,8 @@ class version_object
 
    public function get_version_date_order ()
    {
-      $version = version_get ( $this->version_id );
-      return date_is_null ( $version->date_order ) ? '' : string_attribute ( date ( config_get ( 'calendar_date_format' ), $version->date_order ) );
+      $version_date_order = version_get_field ( $this->version_id, 'date_order' );
+      return date_is_null ( $version_date_order ) ? '' : string_attribute ( date ( config_get ( 'calendar_date_format' ), $version_date_order ) );
    }
 
    public function get_version_description ()
