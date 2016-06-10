@@ -1,30 +1,30 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: stefan.schwarz
- * Date: 09.06.2016
- * Time: 13:33
- */
 
 require_once VERSIONMANAGEMENT_CORE_URI . 'version_management_api.php';
-require_once VERSIONMANAGEMENT_CORE_URI . 'version_processor.php';
+require_once VERSIONMANAGEMENT_CORE_URI . 'version_object.php';
 
-process_delete ();
+process_page ();
 
-function process_delete ()
+/**
+ * authenticates a user and removes a version if user has level to do
+ */
+function process_page ()
 {
    auth_reauthenticate ();
 
-   $version_id = $_GET[ 'version_id' ];
-   $version_proc = new version_processor( $version_id );
+   $version_id = gpc_get_int ( 'version_id' );
+   $version_object = new version_object( $version_id );
 
-   access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version_proc->get_version_project_id () );
+   /** check if user has level in related project */
+   access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version_object->get_version_project_id () );
 
-   helper_ensure_confirmed ( lang_get ( 'version_delete_sure' ) .
-      '<br/>' . lang_get ( 'word_separator' ) . string_display_line ( $version_proc->get_version_name () ),
-      lang_get ( 'delete_version_button' ) );
+   /** ensure that user confirms request to remove the version */
+   helper_ensure_confirmed ( lang_get ( 'version_delete_sure' ) . '<br/>' . lang_get ( 'word_separator' ) .
+      string_display_line ( $version_object->get_version_name () ), lang_get ( 'delete_version_button' ) );
 
-   $version_proc->delete_version ();
+   /** remove version */
+   $version_object->delete_version ();
 
-   print_successful_redirect ( plugin_page ( 'version_view', true ) . '&amp;edit=0' );
+   /** redirect to view page */
+   print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&amp;edit=0' );
 }

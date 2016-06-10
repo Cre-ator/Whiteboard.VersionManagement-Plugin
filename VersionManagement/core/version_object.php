@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: schwarz
- * Date: 03.06.2016
- * Time: 16:27
- */
-class version_processor
+class version_object
 {
    private $version_id;
 

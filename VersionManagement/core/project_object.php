@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: schwarz
- * Date: 03.06.2016
- * Time: 16:56
- */
-class project_processor
+class project_object
 {
    private $project_id;
 

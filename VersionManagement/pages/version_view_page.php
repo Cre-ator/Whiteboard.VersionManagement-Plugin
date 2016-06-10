@@ -1,7 +1,7 @@
 <?php
 
 require_once VERSIONMANAGEMENT_CORE_URI . 'version_management_api.php';
-require_once VERSIONMANAGEMENT_CORE_URI . 'version_processor.php';
+require_once VERSIONMANAGEMENT_CORE_URI . 'version_object.php';
 
 process_page ();
 
@@ -33,7 +33,7 @@ function process_table ()
 
 function open_table ()
 {
-   if ( check_mantis_version_is_released () )
+   if ( version_management_api::check_mantis_version_is_released () )
    {
       echo '<table class="width100">';
    }
@@ -77,14 +77,14 @@ function print_table_body ()
    $index = 1;
    foreach ( $versions as $version )
    {
-      $version_proc = new version_processor( $version[ 'id' ] );
+      $version_object = new version_object( $version[ 'id' ] );
       printRow ();
-      print_version_name_column ( $version_proc );
-      print_version_released_column ( $version_proc, $index );
-      print_version_obsolete_column ( $version_proc, $index );
-      print_version_date_order_column ( $version_proc );
-      print_version_description_column ( $version_proc );
-      print_version_action_column ( $version_proc );
+      print_version_name_column ( $version_object );
+      print_version_released_column ( $version_object, $index );
+      print_version_obsolete_column ( $version_object, $index );
+      print_version_date_order_column ( $version_object );
+      print_version_description_column ( $version_object );
+      print_version_action_column ( $version_object );
       $index++;
    }
    echo '</tr>';
@@ -93,7 +93,7 @@ function print_table_body ()
    echo '</tbody>';
 }
 
-function print_version_name_column ( version_processor $version_proc )
+function print_version_name_column ( version_object $version_object )
 {
    echo '<td>';
    if ( $_GET[ "edit" ] == 1 )
@@ -101,18 +101,18 @@ function print_version_name_column ( version_processor $version_proc )
       echo '<label for="proj-version-new-version">';
       echo '<span class="input" style="width:100%;">';
       echo '<input type="text" id="proj-version-new-version" name="version[]"
-                      style="width:100%;" maxlength="64" value="' . string_attribute ( $version_proc->get_version_name () ) . '" />';
+                      style="width:100%;" maxlength="64" value="' . string_attribute ( $version_object->get_version_name () ) . '" />';
       echo '</span>';
       echo '</label>';
    }
    else
    {
-      echo $version_proc->get_version_name ();
+      echo $version_object->get_version_name ();
    }
    echo '</td>';
 }
 
-function print_version_released_column ( version_processor $version_proc, $index )
+function print_version_released_column ( version_object $version_object, $index )
 {
    echo '<td>';
    if ( $_GET[ "edit" ] == 1 )
@@ -120,19 +120,19 @@ function print_version_released_column ( version_processor $version_proc, $index
       echo '<label for="proj-version-released-' . $index . '">';
       echo '<span class="checkbox">';
       echo '<input type="checkbox" id="proj-version-released-' . $index . '" name="released-' . $index . '"';
-      check_checked ( (int)$version_proc->get_version_released (), ON );
+      check_checked ( (int)$version_object->get_version_released (), ON );
       echo '/>';
       echo '</span>';
       echo '</label>';
    }
    else
    {
-      echo trans_bool ( $version_proc->get_version_released () );
+      echo trans_bool ( $version_object->get_version_released () );
    }
    echo '</td>';
 }
 
-function print_version_obsolete_column ( version_processor $version_proc, $index )
+function print_version_obsolete_column ( version_object $version_object, $index )
 {
    echo '<td>';
    if ( $_GET[ "edit" ] == 1 )
@@ -140,19 +140,19 @@ function print_version_obsolete_column ( version_processor $version_proc, $index
       echo '<label for="proj-version-obsolete-' . $index . '">';
       echo '<span class="checkbox">';
       echo '<input type="checkbox" id="proj-version-obsolete-' . $index . '" name="obsolete-' . $index . '"';
-      check_checked ( (int)$version_proc->get_version_obsolete (), ON );
+      check_checked ( (int)$version_object->get_version_obsolete (), ON );
       echo '/>';
       echo '</span>';
       echo '</label>';
    }
    else
    {
-      echo trans_bool ( $version_proc->get_version_obsolete () );
+      echo trans_bool ( $version_object->get_version_obsolete () );
    }
    echo '</td>';
 }
 
-function print_version_date_order_column ( version_processor $version_proc )
+function print_version_date_order_column ( version_object $version_object )
 {
    echo '<td>';
    if ( $_GET[ "edit" ] == 1 )
@@ -160,36 +160,36 @@ function print_version_date_order_column ( version_processor $version_proc )
       echo '<label for="proj-version-date-order">';
       echo '<span class="input">';
       echo '<input type="text" id="proj-version-date-order" name="date_order[]" class="datetime" size="15"
-                      value="' . $version_proc->get_version_date_order () . '" />';
+                      value="' . $version_object->get_version_date_order () . '" />';
       echo '</span>';
       echo '</label>';
    }
    else
    {
-      echo $version_proc->get_version_date_order ();
+      echo $version_object->get_version_date_order ();
    }
    echo '</td>';
 }
 
-function print_version_description_column ( version_processor $version_proc )
+function print_version_description_column ( version_object $version_object )
 {
    echo '<td width="100">';
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<span class="text">';
-      echo '<input type="text" id="proj-version-description" name="description[]" value="' . string_attribute ( $version_proc->get_version_description () ) . '"/>';
+      echo '<input type="text" id="proj-version-description" name="description[]" value="' . string_attribute ( $version_object->get_version_description () ) . '"/>';
       echo '</span>';
    }
    else
    {
-      echo string_display ( $version_proc->get_version_description () );
+      echo string_display ( $version_object->get_version_description () );
    }
    echo '</td>';
 }
 
-function print_version_action_column ( version_processor $version_proc )
+function print_version_action_column ( version_object $version_object )
 {
-   $version_id = $version_proc->get_version_id ();
+   $version_id = $version_object->get_version_id ();
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '<td>';
@@ -205,7 +205,7 @@ function print_version_action_column ( version_processor $version_proc )
 function close_table ()
 {
    echo '</table>';
-   if ( !check_mantis_version_is_released () )
+   if ( !version_management_api::check_mantis_version_is_released () )
    {
       echo '</div>';
    }
@@ -213,7 +213,7 @@ function close_table ()
 
 function printRow ()
 {
-   if ( check_mantis_version_is_released () )
+   if ( version_management_api::check_mantis_version_is_released () )
    {
       echo '<tr ' . helper_alternate_class () . '>';
    }
@@ -227,7 +227,7 @@ function print_foot_row ()
 {
    echo '<tr>';
    echo '<td colspan="5" class="center">';
-   echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view' ) . '&amp;edit=1">';
+   echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=1">';
    echo '<span class="input">';
    echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit' ) . '">';
    echo '</span>';
