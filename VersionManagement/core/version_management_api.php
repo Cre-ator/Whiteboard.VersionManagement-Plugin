@@ -16,4 +16,15 @@ class version_management_api
    {
       return substr ( MANTIS_VERSION, 0, 4 ) == '1.2.';
    }
+
+   /**
+    * returns true, if there is a duplicate entry.
+    *
+    * @param $array
+    * @return bool
+    */
+   public static function check_array_for_duplicates ( $array )
+   {
+      return count ( $array ) !== count ( array_unique ( $array ) );
+   }
 }
