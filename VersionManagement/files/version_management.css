@@ -2,3 +2,9 @@
 {
     text-decoration: none;
 }
+
+tbody tr[class="new_row"]
+{
+    background-color: #6d6d6d;
+    color: #000000;
+}

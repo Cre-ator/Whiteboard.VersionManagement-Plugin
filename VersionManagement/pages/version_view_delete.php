@@ -13,7 +13,10 @@ function process_page ()
    auth_reauthenticate ();
 
    $version_id = gpc_get_int ( 'version_id' );
-   $version_object = new version_object( $version_id );
+   $version = version_get ( $version_id );
+   $version_object = new version_object( $version->id, $version->project_id, $version->version,
+      $version->description, $version->date_order, $version->released, $version->obsolete );
+
 
    /** check if user has level in related project */
    access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version_object->get_version_project_id () );
