@@ -10,24 +10,25 @@ process_page ();
  */
 function process_page ()
 {
-   auth_reauthenticate ();
+    auth_reauthenticate ();
 
-   $version_id = gpc_get_int ( 'version_id' );
-   $version = version_get ( $version_id );
-   $version_object = new version_object( $version->id, $version->project_id, $version->version,
-      $version->description, $version->date_order, $version->released, $version->obsolete );
+    $version_id = gpc_get_int ( 'version_id' );
+    $version = version_get ( $version_id );
+    $version_object = new version_object( $version->id );
+    $version_object->set_version_project_id ( $version->project_id );
+    $version_object->set_version_name ( $version->version );
 
 
-   /** check if user has level in related project */
-   access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version_object->get_version_project_id () );
+    /** check if user has level in related project */
+    access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version_object->get_version_project_id() );
 
-   /** ensure that user confirms request to remove the version */
-   helper_ensure_confirmed ( lang_get ( 'version_delete_sure' ) . '<br/>' . lang_get ( 'word_separator' ) .
-      string_display_line ( $version_object->get_version_name () ), lang_get ( 'delete_version_button' ) );
+    /** ensure that user confirms request to remove the version */
+    helper_ensure_confirmed ( lang_get ( 'version_delete_sure' ) . '<br/>' . lang_get ( 'word_separator' ) .
+        string_display_line ( $version_object->get_version_name () ), lang_get ( 'delete_version_button' ) );
 
-   /** remove version */
-   $version_object->delete_version ();
+    /** remove version */
+    $version_object->delete_version ();
 
-   /** redirect to view page */
-   print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&amp;edit=0' );
+    /** redirect to view page */
+    print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&amp;edit=0' );
 }

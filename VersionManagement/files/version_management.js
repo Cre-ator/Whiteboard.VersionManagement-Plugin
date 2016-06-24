@@ -12,6 +12,7 @@ function add_version_row ()
     var td3 = document.createElement ( "td" );
     var td4 = document.createElement ( "td" );
     var td5 = document.createElement ( "td" );
+    var td6 = document.createElement ( "td" );
     /** version */
     td1.innerHTML = '<input type="text" id="proj-version-new-version" name="version_name[]" style="width:100%;" maxlength="64" value="" />';
     /** released */
@@ -22,6 +23,8 @@ function add_version_row ()
     td4.innerHTML = '<input type="text" id="proj-version-date-order" name="version_date_order[]" size="15" value="" />';
     /** description */
     td5.innerHTML = '<input type="text" id="proj-version-description" name="version_description[]" value="" />';
+    /** document type */
+    td6.innerHTML = '';
 
     tr.className += "new_row";
     tr.appendChild ( td1 );
@@ -29,6 +32,7 @@ function add_version_row ()
     tr.appendChild ( td3 );
     tr.appendChild ( td4 );
     tr.appendChild ( td5 );
+    tr.appendChild ( td6 );
 }
 
 function del_version_row ( initial_row_count )

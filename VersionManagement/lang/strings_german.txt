@@ -10,6 +10,7 @@ $s_plugin_VersionManagement_version_view_table_head_released = 'Veröffentlicht'
 $s_plugin_VersionManagement_version_view_table_head_obsolete = 'Veraltet';
 $s_plugin_VersionManagement_version_view_table_head_date = 'Datumsstempel';
 $s_plugin_VersionManagement_version_view_table_head_description = 'Beschreibung';
+$s_plugin_VersionManagement_version_view_table_head_type = 'Dokumenttyp';
 $s_plugin_VersionManagement_version_view_table_head_action = 'Aktion';
 
 $s_plugin_VersionManagement_version_view_table_head_show_obsolete = 'Veraltete Versionen einblenden';
