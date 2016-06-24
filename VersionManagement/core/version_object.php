@@ -23,15 +23,10 @@ class version_object
     {
         $this->version_id = $version_id;
 
-
-        $this->dbPath = 'localhost';
-        $this->dbUser = 'root';
-        $this->dbPass = '';
-        $this->dbName = 'mantis1219';
-//        $this->dbPath = config_get ( 'hostname' );
-//        $this->dbUser = config_get ( 'db_username' );
-//        $this->dbPass = config_get ( 'db_password' );
-//        $this->dbName = config_get ( 'database_name' );
+        $this->dbPath = config_get ( 'hostname' );
+        $this->dbUser = config_get ( 'db_username' );
+        $this->dbPass = config_get ( 'db_password' );
+        $this->dbName = config_get ( 'database_name' );
 
         $this->mysqli = new mysqli( $this->dbPath, $this->dbUser, $this->dbPass, $this->dbName );
     }
