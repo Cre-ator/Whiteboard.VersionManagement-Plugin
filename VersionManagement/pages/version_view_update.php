@@ -1,7 +1,7 @@
 <?php
 
-require_once VERSIONMANAGEMENT_CORE_URI . 'version_management_api.php';
-require_once VERSIONMANAGEMENT_CORE_URI . 'version_object.php';
+require_once ( __DIR__ . '/../core/version_management_api.php' );
+require_once ( __DIR__ . '/../core/version_object.php' );
 
 process_update ();
 

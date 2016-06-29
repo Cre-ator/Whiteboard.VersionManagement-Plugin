@@ -17,9 +17,8 @@ function process_page ()
         file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' )
     )
     {
-        require_once WHITEBOARDMENU_CORE_URI . 'whiteboard_print_api.php';
-        $whiteboard_print_api = new whiteboard_print_api();
-        $whiteboard_print_api->printWhiteboardMenu ();
+        require_once __DIR__ . '/../../WhiteboardMenu/core/whiteboard_print_api.php';
+        whiteboard_print_api::printWhiteboardMenu ();
     }
 
     echo '<div align="center">';
@@ -144,7 +143,7 @@ function print_table_body ()
         $version_object->set_version_date_order ( $version[ 'date_order' ] );
         $version_object->set_version_released ( $version[ 'released' ] );
         $version_object->set_version_obsolete ( $version[ 'obsolete' ] );
-        printRow ();
+        printRow ( $version_object );
         print_version_name_column ( $version_object );
         print_version_released_column ( $version_object );
         print_version_obsolete_column ( $version_object );
@@ -314,15 +313,22 @@ function close_table ()
     }
 }
 
-function printRow ()
+function printRow ( version_object $version_object )
 {
-    if ( version_management_api::check_mantis_version_is_released () )
+    if ( ( $version_object->check_version_is_used () == false ) )
     {
-        echo '<tr ' . helper_alternate_class () . '>';
+        echo '<tr style="background-color: ' . plugin_config_get ( 'unused_version_row_color' ) . '">';
     }
     else
     {
-        echo '<tr>';
+        if ( version_management_api::check_mantis_version_is_released () )
+        {
+            echo '<tr ' . helper_alternate_class () . '>';
+        }
+        else
+        {
+            echo '<tr>';
+        }
     }
 }
 

@@ -23,6 +23,10 @@ class version_object
     {
         $this->version_id = $version_id;
 
+//        $this->dbPath = 'localhost';
+//        $this->dbUser = 'root';
+//        $this->dbPass = '';
+//        $this->dbName = 'mantis1219';
         $this->dbPath = config_get ( 'hostname' );
         $this->dbUser = config_get ( 'db_username' );
         $this->dbPass = config_get ( 'db_password' );
@@ -111,6 +115,35 @@ class version_object
         $this->version_document_type = $version_document_type;
     }
 
+    public function check_version_is_used ()
+    {
+        $query = /** @lang sql */
+            "SELECT COUNT(id) FROM mantis_bug_table
+            WHERE version = '" . $this->version_name . "'";
+
+        $result = $this->mysqli->query ( $query );
+
+        $id_count = mysqli_fetch_row ( $result )[ 0 ];
+
+        $query = /** @lang sql */
+            "SELECT COUNT(id) FROM mantis_bug_table
+            WHERE fixed_in_version = '" . $this->version_name . "'";
+
+        $result = $this->mysqli->query ( $query );
+
+        $id_count += mysqli_fetch_row ( $result )[ 0 ];
+
+        $query = /** @lang sql */
+            "SELECT COUNT(id) FROM mantis_bug_table
+            WHERE target_version = '" . $this->version_name . "'";
+
+        $result = $this->mysqli->query ( $query );
+
+        $id_count += mysqli_fetch_row ( $result )[ 0 ];
+
+        return $id_count;
+    }
+
     /**
      * adds a new version
      *
@@ -140,9 +173,10 @@ class version_object
     {
         $this->mysqli->query ( "SET SQL_SAFE_UPDATES = 0" );
 
-        $query = "UPDATE mantis_project_version_table
-         SET $field = '" . $version_value . "'
-         WHERE id = " . $this->version_id;
+        $query = /** @lang sql */
+            "UPDATE mantis_project_version_table
+            SET $field = '" . $version_value . "'
+            WHERE id = " . $this->version_id;
 
         $this->mysqli->query ( $query );
 
@@ -157,8 +191,9 @@ class version_object
      */
     public function get_version_db_value ( $field )
     {
-        $query = "SELECT $field FROM mantis_project_version_table
-          WHERE id = " . $this->version_id;
+        $query = /** @lang sql */
+            "SELECT $field FROM mantis_project_version_table
+            WHERE id = " . $this->version_id;
 
         $result = $this->mysqli->query ( $query );
 

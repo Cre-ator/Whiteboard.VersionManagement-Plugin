@@ -18,3 +18,11 @@ $s_plugin_VersionManagement_version_view_table_head_hide_obsolete = 'Veraltete V
 
 $s_plugin_VersionManagement_version_view_table_foot_edit = 'Versionen bearbeiten';
 $s_plugin_VersionManagement_version_view_table_foot_edit_done = 'Änderungen bestätigen';
+
+$s_plugin_VersionManagement_config_page_title = 'Einstellung Version Management';
+$s_plugin_VersionManagement_config_page_general = 'Allgemeine Einstellungen';
+$s_plugin_VersionManagement_config_page_access_level = 'Plugin Zugriffslevel';
+$s_plugin_VersionManagement_config_page_show_menu = 'Menü anzeigen';
+$s_plugin_VersionManagement_config_page_show_footer = 'Plugin Informationen in Fußzeile anzeigen';
+$s_plugin_VersionManagement_config_page_version_overview = 'Einstellungen Versionsübersicht';
+$s_plugin_VersionManagement_config_page_unused_version_row_color = 'Hervorhebung ungenutzte Versionen';
