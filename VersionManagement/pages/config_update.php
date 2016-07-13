@@ -2,7 +2,7 @@
 require_once ( __DIR__ . '/../core/constant_api.php' );
 
 auth_reauthenticate ();
-access_ensure_global_level ( config_get ( 'version_management_access_level' ) );
+access_ensure_global_level ( config_get ( 'access_level' ) );
 //form_security_validate ( 'plugin_VersionManagement_config_update' );
 
 $option_change = gpc_get_bool ( 'config_change', false );
@@ -14,7 +14,7 @@ if ( $option_reset )
 
 if ( $option_change )
 {
-    update_single_value ( 'version_management_access_level', ADMINISTRATOR );
+    update_single_value ( 'access_level', ADMINISTRATOR );
     update_button ( 'show_menu' );
     update_button ( 'show_footer' );
     update_color ( 'unused_version_row_color', '#908b2d' );

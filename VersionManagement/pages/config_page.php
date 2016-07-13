@@ -4,7 +4,7 @@ require_once ( __DIR__ . '/../core/version_management_api.php' );
 require_once ( __DIR__ . '/../core/constant_api.php' );
 
 auth_reauthenticate ();
-access_ensure_global_level ( plugin_config_get ( 'version_management_access_level' ) );
+access_ensure_global_level ( plugin_config_get ( 'access_level' ) );
 
 html_page_top1 ( plugin_lang_get ( 'config_page_title' ) );
 html_page_top2 ();
@@ -35,7 +35,7 @@ echo '<span class="required">*</span>' . plugin_lang_get ( 'config_page_access_l
 echo '</td>';
 echo '<td width="100px" colspan="2">';
 echo '<select name="access_level">';
-print_enum_string_option_list ( 'access_levels', plugin_config_get ( 'version_management_access_level', ADMINISTRATOR ) );
+print_enum_string_option_list ( 'access_levels', plugin_config_get ( 'access_level', ADMINISTRATOR ) );
 echo '</select>';
 echo '</td>';
 echo '</tr>';

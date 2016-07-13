@@ -8,7 +8,7 @@ class VersionManagementPlugin extends MantisPlugin
         $this->description = 'Extended view and more options for the MantisBT version management';
         $this->page = 'config_page';
 
-        $this->version = '1.0.6';
+        $this->version = '1.0.7';
         $this->requires = array
         (
             'MantisCore' => '1.2.0, <= 1.3.99'
@@ -41,7 +41,7 @@ class VersionManagementPlugin extends MantisPlugin
             'show_menu' => ON,
             'show_footer' => ON,
             'unused_version_row_color' => '#908b2d',
-            'version_management_access_level' => ADMINISTRATOR
+            'access_level' => ADMINISTRATOR
         );
     }
 
@@ -50,7 +50,7 @@ class VersionManagementPlugin extends MantisPlugin
         $project_id = helper_get_current_project ();
         $user_id = auth_get_current_user_id ();
 
-        return user_get_access_level ( $user_id, $project_id ) >= plugin_config_get ( 'version_management_access_level', ADMINISTRATOR );
+        return user_get_access_level ( $user_id, $project_id ) >= plugin_config_get ( 'access_level', ADMINISTRATOR );
     }
 
     function footer ()
