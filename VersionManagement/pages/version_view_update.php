@@ -1,7 +1,7 @@
 <?php
 
 require_once ( __DIR__ . '/../core/version_management_api.php' );
-require_once ( __DIR__ . '/../core/version_object.php' );
+require_once ( __DIR__ . '/../core/vmVersion.php' );
 
 process_update ();
 
@@ -25,10 +25,10 @@ function process_update ()
         )
         {
             /** update all version names with temp values */
-            version_management_api::set_temp_version_name ( $version_ids );
+            version_management_api::setTmpVersionName ( $version_ids );
 
             /** update all versions with new values */
-            version_management_api::set_version_data ( $version_ids, $version_names );
+            version_management_api::setVersionData ( $version_ids, $version_names );
         }
         else
         {
