@@ -6,8 +6,8 @@ require_once ( __DIR__ . '/../core/vmVersion.php' );
  */
 auth_reauthenticate ();
 
-$version_id = gpc_get_int ( 'version_id' );
-$version = new vmVersion( $version_id );
+$versionId = gpc_get_int ( 'version_id' );
+$version = new vmVersion( $versionId );
 
 /** check if user has level in related project */
 access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version->getProjectId () );

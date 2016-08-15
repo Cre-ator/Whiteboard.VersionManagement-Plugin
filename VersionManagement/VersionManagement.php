@@ -8,7 +8,7 @@ class VersionManagementPlugin extends MantisPlugin
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.8';
+      $this->version = '1.0.9';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
@@ -45,7 +45,7 @@ class VersionManagementPlugin extends MantisPlugin
       );
    }
 
-   function get_user_has_level ()
+   function checkUserHasLevel ()
    {
       $project_id = helper_get_current_project ();
       $user_id = auth_get_current_user_id ();
@@ -55,7 +55,7 @@ class VersionManagementPlugin extends MantisPlugin
 
    function footer ()
    {
-      if ( plugin_config_get ( 'show_footer' ) && $this->get_user_has_level () )
+      if ( plugin_config_get ( 'show_footer' ) && $this->checkUserHasLevel () )
       {
          return '<address>' . $this->name . '&nbsp;' . $this->version . '&nbsp;Copyright&nbsp;&copy;&nbsp;2016&nbsp;by&nbsp;' . $this->author . '</address>';
       }
@@ -65,7 +65,7 @@ class VersionManagementPlugin extends MantisPlugin
    function menu ()
    {
       if ( ( !plugin_is_installed ( 'WhiteboardMenu' ) || !file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' ) )
-         && plugin_config_get ( 'show_menu' ) && $this->get_user_has_level ()
+         && plugin_config_get ( 'show_menu' ) && $this->checkUserHasLevel ()
       )
       {
          return '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';

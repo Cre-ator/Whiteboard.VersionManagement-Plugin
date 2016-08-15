@@ -6,7 +6,7 @@ require_once ( __DIR__ . '/vmVersion.php' );
  *
  * Contains functions for the plugin specific content
  */
-class version_management_api
+class vmApi
 {
    /**
     * get database connection infos and connect to the database
@@ -31,7 +31,7 @@ class version_management_api
     *
     * @return bool
     */
-   public static function check_document_management_is_installed ()
+   public static function checkDMManagementPluginIsInstalled ()
    {
       return plugin_is_installed ( 'SpecManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'SpecManagement' );
    }
@@ -41,7 +41,7 @@ class version_management_api
     *
     * @return bool
     */
-   public static function check_mantis_version_is_released ()
+   public static function checkMantisIsDeprecated ()
    {
       return substr ( MANTIS_VERSION, 0, 4 ) == '1.2.';
    }
@@ -52,7 +52,7 @@ class version_management_api
     * @param $array
     * @return bool
     */
-   public static function check_array_for_duplicates ( $array )
+   public static function checkArrayDuplicates ( $array )
    {
       return count ( $array ) !== count ( array_unique ( $array ) );
    }
@@ -60,29 +60,29 @@ class version_management_api
    /**
     * checks a given id array for matching a given id. returns 1 when match, 0 otherwise
     *
-    * @param $version_boolean_ids
-    * @param $version_id
+    * @param $versionBoolIds
+    * @param $versionId
     * @return int
     */
-   public static function set_boolean_value ( $version_boolean_ids, $version_id )
+   public static function setBoolean ( $versionBoolIds, $versionId )
    {
       /** initialize released and obsolete flag */
-      $boolean_value = 0;
+      $bool = 0;
 
-      if ( !empty( $version_boolean_ids ) )
+      if ( !empty( $versionBoolIds ) )
       {
          /** set released value */
-         foreach ( $version_boolean_ids as $version_boolean_id )
+         foreach ( $versionBoolIds as $versionBoolId )
          {
             /** version_id-match */
-            if ( $version_id == $version_boolean_id )
+            if ( $versionId == $versionBoolId )
             {
-               $boolean_value = 1;
+               $bool = 1;
             }
          }
       }
 
-      return $boolean_value;
+      return $bool;
    }
 
    /**
@@ -90,71 +90,71 @@ class version_management_api
     *
     * @return array
     */
-   public static function get_version_obsolete_hash_array ()
+   public static function getVersionObsoleteHashArray ()
    {
-      $current_project_id = helper_get_current_project ();
-      $versions = version_get_all_rows_with_subs ( $current_project_id, null, true );
+      $currentProjectId = helper_get_current_project ();
+      $versions = version_get_all_rows_with_subs ( $currentProjectId, null, true );
 
-      $version_obsolete_hash_array = array ();
+      $versionObsoleteHashArray = array ();
       foreach ( $versions as $version )
       {
-         array_push ( $version_obsolete_hash_array, $version[ 'version' ] . '_' . $version[ 'project_id' ] );
+         array_push ( $versionObsoleteHashArray, $version[ 'version' ] . '_' . $version[ 'project_id' ] );
       }
 
-      return $version_obsolete_hash_array;
+      return $versionObsoleteHashArray;
    }
 
    /**
     * creates an array with a hash_string consisting of the name and its assigned project id
     *
-    * @param $version_ids
-    * @param $version_names
+    * @param $versionIds
+    * @param $versionNames
     * @return array
     */
-   public static function get_version_hash_array ( $version_ids, $version_names )
+   public static function getVersionValidHashArray ( $versionIds, $versionNames )
    {
-      $version_hash_array = array ();
-      for ( $version_index = 0; $version_index < count ( $version_ids ); $version_index++ )
+      $versionValidHashArray = array ();
+      for ( $index = 0; $index < count ( $versionIds ); $index++ )
       {
          /** ignore this item, if the version is obsolete. it will used later */
-         if ( version_get_field ( $version_ids[ $version_index ], 'obsolete' ) == 1 )
+         if ( version_get_field ( $versionIds[ $index ], 'obsolete' ) == 1 )
          {
             continue;
          }
          /** gemerate hash string and push to hash array */
-         $version_hash_string = $version_names[ $version_index ] . '_' . version_get_field ( $version_ids[ $version_index ], 'project_id' );
-         array_push ( $version_hash_array, $version_hash_string );
+         $hashString = $versionNames[ $index ] . '_' . version_get_field ( $versionIds[ $index ], 'project_id' );
+         array_push ( $versionValidHashArray, $hashString );
       }
 
-      return $version_hash_array;
+      return $versionValidHashArray;
    }
 
    /**
     * returns true if the new version data is completely valid
     *
-    * @param $version_ids
-    * @param $version_names
+    * @param $versionIds
+    * @param $versionNames
     * @return bool
     */
-   public static function check_version_data_is_valid ( $version_ids, $version_names )
+   public static function checkVersionDataIsValid ( $versionIds, $versionNames )
    {
-      $post_version_released = $_POST[ 'version_released' ];
-      $post_version_obsolete = $_POST[ 'version_obsolete' ];
-      $post_version_date_orders = $_POST[ 'version_date_order' ];
+      $postVersionReleased = $_POST[ 'version_released' ];
+      $postVersionObsolete = $_POST[ 'version_obsolete' ];
+      $postVersionDateOrder = $_POST[ 'version_date_order' ];
 
-      for ( $version_index = 0; $version_index < count ( $version_ids ); $version_index++ )
+      for ( $index = 0; $index < count ( $versionIds ); $index++ )
       {
-         $version_id = $version_ids[ $version_index ];
-         $version_name = trim ( $version_names[ $version_index ] );
-         $version_released = version_management_api::set_boolean_value ( $post_version_released, $version_id );
-         $version_obsolete = version_management_api::set_boolean_value ( $post_version_obsolete, $version_id );
-         $version_date_order = version_management_api::format_date ( $post_version_date_orders[ $version_index ] );
+         $versionId = $versionIds[ $index ];
+         $versionName = trim ( $versionNames[ $index ] );
+         $versionReleased = self::setBoolean ( $postVersionReleased, $versionId );
+         $versionObsolete = self::setBoolean ( $postVersionObsolete, $versionId );
+         $versionDateOrder = self::formatDate ( $postVersionDateOrder[ $index ] );
 
          if (
-            ( strlen ( $version_name ) == 0 ) ||
-            ( ( $version_released < 0 ) || ( $version_released > 1 ) ) ||
-            ( ( $version_obsolete < 0 ) || ( $version_obsolete > 1 ) ) ||
-            ( !is_numeric ( $version_date_order ) )
+            ( strlen ( $versionName ) == 0 ) ||
+            ( ( $versionReleased < 0 ) || ( $versionReleased > 1 ) ) ||
+            ( ( $versionObsolete < 0 ) || ( $versionObsolete > 1 ) ) ||
+            ( !is_numeric ( $versionDateOrder ) )
          )
          {
             return false;
@@ -188,10 +188,10 @@ class version_management_api
    /**
     * sets the version data for all versions
     *
-    * @param $version_ids
-    * @param $version_names
+    * @param $versionIds
+    * @param $versionNames
     */
-   public static function setVersionData ( $version_ids, $version_names )
+   public static function setVersionData ( $versionIds, $versionNames )
    {
       $postVersionDescription = $_POST[ 'version_description' ];
       $postVersionReleased = $_POST[ 'version_released' ];
@@ -199,15 +199,15 @@ class version_management_api
       $postVersionDateOrder = $_POST[ 'version_date_order' ];
       $postVersionDocumentType = $_POST[ 'version-type' ];
 
-      for ( $index = 0; $index < count ( $version_ids ); $index++ )
+      for ( $index = 0; $index < count ( $versionIds ); $index++ )
       {
-         $versionId = $version_ids[ $index ];
+         $versionId = $versionIds[ $index ];
          $version = new vmVersion( $versionId );
-         $version->setVersionName ( trim ( $version_names[ $index ] ) );
+         $version->setVersionName ( trim ( $versionNames[ $index ] ) );
          $version->setDescription ( trim ( $postVersionDescription[ $index ] ) );
-         $version->setReleased ( version_management_api::set_boolean_value ( $postVersionReleased, $versionId ) );
-         $version->setObsolete ( version_management_api::set_boolean_value ( $postVersionObsolete, $versionId ) );
-         $version->setDateOrder ( version_management_api::format_date ( $postVersionDateOrder[ $index ] ) );
+         $version->setReleased ( self::setBoolean ( $postVersionReleased, $versionId ) );
+         $version->setObsolete ( self::setBoolean ( $postVersionObsolete, $versionId ) );
+         $version->setDateOrder ( self::formatDate ( $postVersionDateOrder[ $index ] ) );
          $version->triggerUpdateInDb ();
 
          $versionDocumentType = $postVersionDocumentType[ $index ];
@@ -240,7 +240,7 @@ class version_management_api
     * @param $versionIds
     * @param $versionNames
     */
-   public static function set_new_version_data ( $versionIds, $versionNames )
+   public static function setNewVersionData ( $versionIds, $versionNames )
    {
       $postVersionDateOrder = $_POST[ 'version_date_order' ];
       $postVersionDescription = $_POST[ 'version_description' ];
@@ -252,7 +252,7 @@ class version_management_api
          for ( $index = $newVersionIndex; $index < count ( $versionNames ); $index++ )
          {
             $newVersionName = trim ( $versionNames[ $index ] );
-            $newVersionDateOrder = version_management_api::format_date ( $postVersionDateOrder[ $index ] );
+            $newVersionDateOrder = self::formatDate ( $postVersionDateOrder[ $index ] );
             $newVersionDescription = trim ( $postVersionDescription[ $index ] );
 
             if ( strlen ( $newVersionName ) > 0 )
@@ -281,27 +281,124 @@ class version_management_api
     * format a given value to a valid integer
     * returns actual time, if the date value is null or empty
     *
-    * @param $date_value
+    * @param $date
     * @return int
     */
-   public static function format_date ( $date_value )
+   public static function formatDate ( $date )
    {
-      if ( !is_numeric ( $date_value ) )
+      if ( !is_numeric ( $date ) )
       {
-         if ( $date_value == '' )
+         if ( $date == '' )
          {
-            $date_value = time ();
+            $date = time ();
          }
          else
          {
-            $date_value = strtotime ( $date_value );
-            if ( $date_value === false )
+            $date = strtotime ( $date );
+            if ( $date === false )
             {
                trigger_error ( ERROR_INVALID_DATE_FORMAT, ERROR );
             }
          }
       }
 
-      return $date_value;
+      return $date;
+   }
+
+
+   /**
+    * Adds the "#"-Tag if necessary
+    *
+    * @param $color
+    * @return string
+    */
+   public static function includeLeadingColorIdentifier ( $color )
+   {
+      if ( "#" == $color[ 0 ] )
+      {
+         return $color;
+      }
+      else
+      {
+         return "#" . $color;
+      }
+   }
+
+   /**
+    * Updates a specific color value in the plugin
+    *
+    * @param $fieldName
+    * @param $defaultColor
+    */
+   public static function updateColor ( $fieldName, $defaultColor )
+   {
+      $defaultColor = self::includeLeadingColorIdentifier ( $defaultColor );
+      $color = self::includeLeadingColorIdentifier ( gpc_get_string ( $fieldName, $defaultColor ) );
+
+      if ( plugin_config_get ( $fieldName ) != $color && plugin_config_get ( $fieldName ) != '' )
+      {
+         plugin_config_set ( $fieldName, $color );
+      }
+      elseif ( plugin_config_get ( $fieldName ) == '' )
+      {
+         plugin_config_set ( $fieldName, $defaultColor );
+      }
+   }
+
+   /**
+    * Updates the value set by a button
+    *
+    * @param $config
+    */
+   public static function updateButton ( $config )
+   {
+      $button = gpc_get_int ( $config );
+
+      if ( plugin_config_get ( $config ) != $button )
+      {
+         plugin_config_set ( $config, $button );
+      }
+   }
+
+   /**
+    * Updates the value set by an input text field
+    *
+    * @param $value
+    * @param $constant
+    */
+   public static function updateSingleValue ( $value, $constant )
+   {
+      $actualValue = null;
+
+      if ( is_int ( $value ) )
+      {
+         $actualValue = gpc_get_int ( $value, $constant );
+      }
+
+      if ( is_string ( $value ) )
+      {
+         $actualValue = gpc_get_string ( $value, $constant );
+      }
+
+      if ( plugin_config_get ( $value ) != $actualValue )
+      {
+         plugin_config_set ( $value, $actualValue );
+      }
+   }
+
+   /**
+    * gets and returns the obsolete GET parameter
+    *
+    * @return bool|null
+    */
+   public static function getObsoleteValue ()
+   {
+      $obsolete = false;
+      if ( $_GET[ 'obsolete' ] == 1 )
+      {
+         $obsolete = null;
+      }
+
+      return $obsolete;
    }
 }

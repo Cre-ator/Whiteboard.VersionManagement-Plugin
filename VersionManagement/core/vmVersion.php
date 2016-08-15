@@ -1,15 +1,11 @@
 <?php
-require_once ( __DIR__ . '/version_management_api.php' );
+require_once ( __DIR__ . '/vmApi.php' );
 
 /**
  * Class vmVersion - represents a version object with
  */
 class vmVersion
 {
-   /**
-    * @var mysqli
-    */
-//   private $mysqli;
    /**
     * @var integer
     */
@@ -251,7 +247,7 @@ class vmVersion
     */
    private function dbInitVersionById ()
    {
-      $mysqli = version_management_api::initializeDbConnection ();
+      $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          'SELECT * FROM mantis_project_version_table WHERE id=' . $this->versionId;
@@ -273,7 +269,7 @@ class vmVersion
     */
    private function dbInsertVersion ()
    {
-      $mysqli = version_management_api::initializeDbConnection ();
+      $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          'INSERT INTO mantis_project_version_table (id,project_id,version,description,released,obsolete,date_order)
@@ -293,7 +289,7 @@ class vmVersion
     */
    private function dbUpdateVersion ()
    {
-      $mysqli = version_management_api::initializeDbConnection ();
+      $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          'UPDATE mantis_project_version_table
@@ -311,7 +307,7 @@ class vmVersion
     */
    private function dbDeleteVersion ()
    {
-      $mysqli = version_management_api::initializeDbConnection ();
+      $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          'DELETE FROM mantis_project_version_table WHERE id=' . $this->versionId;
@@ -322,7 +318,7 @@ class vmVersion
 
    public function checkVersionIsUsed ()
    {
-      $mysqli = version_management_api::initializeDbConnection ();
+      $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          "SELECT COUNT(id) FROM mantis_bug_table
@@ -330,7 +326,7 @@ class vmVersion
 
       $result = $mysqli->query ( $query );
 
-      $id_count = mysqli_fetch_row ( $result )[ 0 ];
+      $idCount = mysqli_fetch_row ( $result )[ 0 ];
 
       $query = /** @lang sql */
          "SELECT COUNT(id) FROM mantis_bug_table
@@ -338,7 +334,7 @@ class vmVersion
 
       $result = $mysqli->query ( $query );
 
-      $id_count += mysqli_fetch_row ( $result )[ 0 ];
+      $idCount += mysqli_fetch_row ( $result )[ 0 ];
 
       $query = /** @lang sql */
          "SELECT COUNT(id) FROM mantis_bug_table
@@ -346,9 +342,9 @@ class vmVersion
 
       $result = $mysqli->query ( $query );
 
-      $id_count += mysqli_fetch_row ( $result )[ 0 ];
+      $idCount += mysqli_fetch_row ( $result )[ 0 ];
       $mysqli->close ();
 
-      return $id_count;
+      return $idCount;
    }
 }
