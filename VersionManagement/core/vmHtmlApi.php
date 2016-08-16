@@ -22,6 +22,29 @@ class vmHtmlApi
    }
 
    /**
+    * triggers whiteboard menu if installed
+    */
+   public static function htmlPluginTriggerWhiteboardMenu ()
+   {
+      if ( plugin_is_installed ( 'WhiteboardMenu' ) &&
+         file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' )
+      )
+      {
+         require_once __DIR__ . '/../../WhiteboardMenu/core/whiteboard_print_api.php';
+         whiteboard_print_api::printWhiteboardMenu ();
+      }
+   }
+
+   /**
+    * prints initial ressources for the page
+    */
+   public static function htmlInitializeRessources ()
+   {
+      echo '<script type="text/javascript" src="plugins/VersionManagement/files/version_management.js"></script>';
+      echo '<link rel="stylesheet" href="plugins/VersionManagement/files/version_management.css"/>';
+   }
+
+   /**
     * Prints a category column in the plugin config area
     *
     * @param $colspan
@@ -292,7 +315,7 @@ class vmHtmlApi
     */
    public static function htmlVersionViewRowOpen ( vmVersion $version )
    {
-      if ( !$version->checkVersionIsUsed () )
+      if ( !$version->isVersionIsUsed () )
       {
          echo '<tr style="background-color: ' . plugin_config_get ( 'unused_version_row_color' ) . '">';
       }
@@ -442,5 +465,28 @@ class vmHtmlApi
       }
       echo '</tr>';
       echo '</thead>';
+   }
+
+   /** effort management */
+
+   /**
+    * @param $content
+    */
+   public static function htmlEffortViewColumn ( $content )
+   {
+      echo '<div class="td">' . $content . '</div>';
+   }
+
+   public static function htmlEffoertViewHeadRow ()
+   {
+      echo '<div class="tr">';
+      echo '<div class="td">' . lang_get ( 'version' ) . '</div>';
+      echo '<div class="td">' . plugin_lang_get ( 'effort_view_scheduled' ) . '</div>';
+      echo '<div class="td">' . plugin_lang_get ( 'effort_view_issuecount' ) . '</div>';
+      echo '<div class="td">&#931</div>'; # &#931 Summenzeichen
+      echo '<div class="td">' . plugin_lang_get ( 'effort_view_progress' ) . '</div>';
+      echo '<div class="td">' . plugin_lang_get ( 'effort_view_remaintime' ) . '</div>';
+      echo '<div class="td">' . plugin_lang_get ( 'effort_view_uncertainty' ) . '</div>';
+      echo '</div>';
    }
 }

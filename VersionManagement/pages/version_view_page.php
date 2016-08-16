@@ -8,26 +8,20 @@ processPage ();
 
 function processPage ()
 {
-
+   # print page top
    html_page_top1 ( plugin_lang_get ( 'menu_title' ) );
-   echo '<script type="text/javascript" src="plugins/VersionManagement/files/version_management.js"></script>';
-   echo '<link rel="stylesheet" href="plugins/VersionManagement/files/version_management.css"/>';
+   vmHtmlApi::htmlInitializeRessources ();
    html_page_top2 ();
 
-   if ( plugin_is_installed ( 'WhiteboardMenu' ) &&
-      file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' )
-   )
-   {
-      require_once __DIR__ . '/../../WhiteboardMenu/core/whiteboard_print_api.php';
-      whiteboard_print_api::printWhiteboardMenu ();
-   }
+   # print whiteboard menu bar
+   vmHtmlApi::htmlPluginTriggerWhiteboardMenu ();
 
    echo '<div align="center">';
    echo '<hr size="1" width="100%" />';
-
    processContent ();
-
    echo '</div>';
+
+   # print page bottom
    html_page_bottom ();
 }
 

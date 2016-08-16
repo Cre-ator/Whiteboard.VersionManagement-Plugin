@@ -6,12 +6,6 @@ auth_reauthenticate ();
 access_ensure_global_level ( config_get ( 'access_level' ) );
 
 $optionChange = gpc_get_bool ( 'config_change', false );
-$optionReset = gpc_get_bool ( 'config_reset', false );
-
-if ( $optionReset )
-{
-   /* todo reset plugin data */
-}
 
 if ( $optionChange )
 {

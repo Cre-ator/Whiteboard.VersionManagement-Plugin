@@ -8,7 +8,7 @@ class VersionManagementPlugin extends MantisPlugin
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.9';
+      $this->version = '1.0.10';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
@@ -68,7 +68,8 @@ class VersionManagementPlugin extends MantisPlugin
          && plugin_config_get ( 'show_menu' ) && $this->checkUserHasLevel ()
       )
       {
-         return '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+         $versionView = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+         return $versionView;
       }
       return null;
    }

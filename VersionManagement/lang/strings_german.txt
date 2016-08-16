@@ -1,9 +1,8 @@
 <?php
 
 $s_plugin_VersionManagement_menu_title = 'Versionsverwaltung';
+$s_plugin_VersionManagement_effort_title = 'Aufwandsübersicht';
 $s_plugin_VersionManagement_version_view_title = 'Versionen';
-
-
 
 $s_plugin_VersionManagement_version_view_table_head_version = 'Version';
 $s_plugin_VersionManagement_version_view_table_head_released = 'Veröffentlicht';
@@ -12,10 +11,8 @@ $s_plugin_VersionManagement_version_view_table_head_date = 'Datumsstempel';
 $s_plugin_VersionManagement_version_view_table_head_description = 'Beschreibung';
 $s_plugin_VersionManagement_version_view_table_head_type = 'Dokumenttyp';
 $s_plugin_VersionManagement_version_view_table_head_action = 'Aktion';
-
 $s_plugin_VersionManagement_version_view_table_head_show_obsolete = 'Veraltete Versionen einblenden';
 $s_plugin_VersionManagement_version_view_table_head_hide_obsolete = 'Veraltete Versionen ausblenden';
-
 $s_plugin_VersionManagement_version_view_table_foot_edit = 'Versionen bearbeiten';
 $s_plugin_VersionManagement_version_view_table_foot_edit_done = 'Änderungen bestätigen';
 
@@ -26,3 +23,9 @@ $s_plugin_VersionManagement_config_page_show_menu = 'Menü anzeigen';
 $s_plugin_VersionManagement_config_page_show_footer = 'Plugin Informationen in Fußzeile anzeigen';
 $s_plugin_VersionManagement_config_page_version_overview = 'Einstellungen Versionsübersicht';
 $s_plugin_VersionManagement_config_page_unused_version_row_color = 'Hervorhebung ungenutzte Versionen';
+
+$s_plugin_VersionManagement_effort_view_scheduled = 'Scheduled';
+$s_plugin_VersionManagement_effort_view_issuecount = 'Anzahl Einträge';
+$s_plugin_VersionManagement_effort_view_progress = 'Fortschritt';
+$s_plugin_VersionManagement_effort_view_remaintime = 'Verbleibende Dauer';
+$s_plugin_VersionManagement_effort_view_uncertainty = 'Unsicherheit';

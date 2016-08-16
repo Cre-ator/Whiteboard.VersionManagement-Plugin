@@ -13,7 +13,7 @@ $version = new vmVersion( $versionId );
 access_ensure_project_level ( config_get ( 'manage_project_threshold' ), $version->getProjectId () );
 
 /** delete without request, if the version is not used anywhere */
-if ( !$version->checkVersionIsUsed () )
+if ( !$version->isVersionIsUsed () )
 {
    /** remove version */
    $version->triggerDeleteFromDb ();

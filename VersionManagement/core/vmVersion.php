@@ -38,6 +38,14 @@ class vmVersion
     * @var integer
     */
    private $documentType;
+   /**
+    * @var boolean
+    */
+   private $versionIsUsed;
+   /**
+    * @var integer
+    */
+   private $targetVersionIssueCount;
 
    /**
     * vmVersion constructor.
@@ -189,6 +197,25 @@ class vmVersion
    }
 
    /**
+    * @return boolean
+    */
+   public function isVersionIsUsed ()
+   {
+      $this->checkVersionIsUsed ();
+      return $this->versionIsUsed;
+   }
+
+   /**
+    * @param $status
+    * @return int
+    */
+   public function getTargetVersionIssueCount ( $status )
+   {
+      $this->checkTargetVersionIssueCount ( $status );
+      return $this->targetVersionIssueCount;
+   }
+
+   /**
     * insert object data into new database row
     */
    public function triggerInsertIntoDb ()
@@ -316,35 +343,52 @@ class vmVersion
       $mysqli->close ();
    }
 
-   public function checkVersionIsUsed ()
+   /**
+    * check if the version is used in any bug
+    */
+   private function checkVersionIsUsed ()
    {
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         "SELECT COUNT(id) FROM mantis_bug_table
-            WHERE version = '" . $this->versionName . "'";
+         'SELECT COUNT(id) FROM mantis_bug_table
+         WHERE version=\'' . $this->versionName . '\'';
 
       $result = $mysqli->query ( $query );
 
       $idCount = mysqli_fetch_row ( $result )[ 0 ];
 
       $query = /** @lang sql */
-         "SELECT COUNT(id) FROM mantis_bug_table
-            WHERE fixed_in_version = '" . $this->versionName . "'";
+         'SELECT COUNT(id) FROM mantis_bug_table
+         WHERE fixed_in_version=\'' . $this->versionName . '\'';
 
       $result = $mysqli->query ( $query );
 
       $idCount += mysqli_fetch_row ( $result )[ 0 ];
 
       $query = /** @lang sql */
-         "SELECT COUNT(id) FROM mantis_bug_table
-            WHERE target_version = '" . $this->versionName . "'";
+         'SELECT COUNT(id) FROM mantis_bug_table
+         WHERE target_version=\'' . $this->versionName . '\'';
 
       $result = $mysqli->query ( $query );
 
       $idCount += mysqli_fetch_row ( $result )[ 0 ];
       $mysqli->close ();
 
-      return $idCount;
+      $this->versionIsUsed = ( $idCount > 0 );
+   }
+
+   private function checkTargetVersionIssueCount ( $status )
+   {
+      $mysqli = vmApi::initializeDbConnection ();
+
+      $query = /** @lang sql */
+         'SELECT COUNT(id) FROM mantis_bug_table
+         WHERE target_version=\'' . $this->versionName . '\'
+         AND status=' . $status;
+
+      $result = $mysqli->query ( $query );
+      $this->targetVersionIssueCount = mysqli_fetch_row ( $result )[ 0 ];
+      $mysqli->close ();
    }
 }

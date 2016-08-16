@@ -61,7 +61,6 @@ echo '</tr>';
 echo '<tr>';
 echo '<td class="center" colspan="5">';
 echo '<input type="submit" name="config_change" class="button" value="' . lang_get ( 'update_prefs_button' ) . '"/>' . ' ';
-echo '<input type="submit" name="config_reset" class="button" value="' . lang_get ( 'reset_prefs_button' ) . '"/>';
 echo '</td>';
 echo '</tr>';
 
