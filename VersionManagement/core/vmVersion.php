@@ -371,11 +371,16 @@ class vmVersion
     */
    private function dbGetValueSpecHistoryIds ( $value )
    {
+      $affectedBugIds = $this->dbGetProjectSpecBugIds ();
+      $filterString = implode ( ',', $affectedBugIds );
+
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
          'SELECT id FROM mantis_bug_history_table WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\')
-          AND ' . $value . ' = \'' . $this->versionOldName . '\'';
+          bug_id IN (' . $filterString . ') AND ' . $value . ' = \'' . $this->versionOldName . '\'';
+
+      var_dump ( $query );
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
@@ -426,7 +431,35 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'SELECT id FROM mantis_bug_table WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'';
+         'SELECT id FROM mantis_bug_table WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'
+         AND project_id = ' . $this->projectId;
+
+      $result = $mysqli->query ( $query );
+      $mysqli->close ();
+
+      $bugIds = array ();
+      if ( $result->num_rows != 0 )
+      {
+         while ( $row = $result->fetch_row () )
+         {
+            $bugIds[] = $row[ 0 ];
+         }
+      }
+
+      return $bugIds;
+   }
+
+   /**
+    * get bug ids by version spec project id
+    *
+    * @return array
+    */
+   private function dbGetProjectSpecBugIds ()
+   {
+      $mysqli = vmApi::initializeDbConnection ();
+
+      $query = /** @lang sql */
+         'SELECT id FROM mantis_bug_table WHERE project_id= ' . $this->projectId;
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
