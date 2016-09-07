@@ -327,7 +327,7 @@ class vmVersion
          'UPDATE mantis_project_version_table
          SET project_id=' . $this->projectId . ',version=\'' . $this->versionName . '\', 
          description=\'' . $this->description . '\',released=' . $this->released . ', 
-         obsolete=' . $this->obsolete . '
+         obsolete=' . $this->obsolete . ',date_order=' . $this->dateOrder . '
          WHERE id=' . $this->versionId;
 
       $mysqli->query ( $query );
