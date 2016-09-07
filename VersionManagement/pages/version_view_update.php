@@ -10,11 +10,11 @@ update ();
  */
 function update ()
 {
+   $versionNames = $_POST[ 'version_name' ];
    if ( isset( $_POST[ 'version_id' ] ) )
    {
       auth_reauthenticate ();
       $versionIds = $_POST[ 'version_id' ];
-      $versionNames = $_POST[ 'version_name' ];
 
       $versionValidHashArray = vmApi::getVersionValidHashArray ( $versionIds, $versionNames );
       $versionObsoleteHashArray = vmApi::getVersionObsoleteHashArray ();
@@ -38,7 +38,11 @@ function update ()
 
       vmApi::setNewVersionData ( $versionIds, $versionNames );
 
-      /** redirect to view page */
-      print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&edit=0&obsolete=0' );
    }
+   else
+   {
+      vmApi::setNewVersionData ( null, $versionNames );
+   }
+   /** redirect to view page */
+   print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&edit=0&obsolete=0' );
 }
