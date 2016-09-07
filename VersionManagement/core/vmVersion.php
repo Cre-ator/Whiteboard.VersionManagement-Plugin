@@ -380,8 +380,6 @@ class vmVersion
          'SELECT id FROM mantis_bug_history_table WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\')
           bug_id IN (' . $filterString . ') AND ' . $value . ' = \'' . $this->versionOldName . '\'';
 
-      var_dump ( $query );
-
       $result = $mysqli->query ( $query );
       $mysqli->close ();
 
