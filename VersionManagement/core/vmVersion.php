@@ -21,6 +21,10 @@ class vmVersion
    /**
     * @var string
     */
+   private $versionOldName;
+   /**
+    * @var string
+    */
    private $description;
    /**
     * @var integer
@@ -285,6 +289,7 @@ class vmVersion
 
       $this->projectId = $dbVersionRow[ 1 ];
       $this->versionName = $dbVersionRow[ 2 ];
+      $this->versionOldName = $dbVersionRow[ 2 ];
       $this->description = $dbVersionRow[ 3 ];
       $this->released = $dbVersionRow[ 4 ];
       $this->obsolete = $dbVersionRow[ 5 ];
@@ -327,6 +332,115 @@ class vmVersion
 
       $mysqli->query ( $query );
       $mysqli->close ();
+
+      $this->dbTriggerUpdateBugVersion ( 'version' );
+      $this->dbTriggerUpdateBugVersion ( 'fixed_in_version' );
+      $this->dbTriggerUpdateBugVersion ( 'target_version' );
+      $this->dbTriggerUpdateBugHistory ( 'old_value' );
+      $this->dbTriggerUpdateBugHistory ( 'new_value' );
+   }
+
+   /**
+    * update given value of bug history entrys
+    *
+    * @param $value
+    */
+   private function dbTriggerUpdateBugHistory ( $value )
+   {
+      $affectedHistoryIds = $this->dbGetValueSpecHistoryIds ( $value );
+
+      foreach ( $affectedHistoryIds as $affectedHistoryId )
+      {
+         $mysqli = vmApi::initializeDbConnection ();
+
+         $query = /** @lang sql */
+            'UPDATE mantis_bug_history_table
+            SET ' . $value . ' =\'' . $this->versionName . '\'
+            WHERE id=' . $affectedHistoryId;
+
+         $mysqli->query ( $query );
+         $mysqli->close ();
+      }
+   }
+
+   /**
+    * get ids from bug history table which have old version name used in given value
+    *
+    * @param $value
+    * @return array
+    */
+   private function dbGetValueSpecHistoryIds ( $value )
+   {
+      $mysqli = vmApi::initializeDbConnection ();
+
+      $query = /** @lang sql */
+         'SELECT id FROM mantis_bug_history_table WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\')
+          AND ' . $value . ' = \'' . $this->versionOldName . '\'';
+
+      $result = $mysqli->query ( $query );
+      $mysqli->close ();
+
+      $historyIds = array ();
+      if ( $result->num_rows != 0 )
+      {
+         while ( $row = $result->fetch_row () )
+         {
+            $historyIds[] = $row[ 0 ];
+         }
+      }
+
+      return $historyIds;
+   }
+
+   /**
+    * update given version type of bug entry
+    *
+    * @param $versionType
+    */
+   private function dbTriggerUpdateBugVersion ( $versionType )
+   {
+      $affectedBugIds = $this->dbGetVersionSpecBugIds ( $versionType );
+
+      foreach ( $affectedBugIds as $affectedBugId )
+      {
+         $mysqli = vmApi::initializeDbConnection ();
+
+         $query = /** @lang sql */
+            'UPDATE mantis_bug_table
+            SET ' . $versionType . ' =\'' . $this->versionName . '\'
+            WHERE id=' . $affectedBugId;
+
+         $mysqli->query ( $query );
+         $mysqli->close ();
+      }
+   }
+
+   /**
+    * get ids from bug table which have old version name used in given version type
+    *
+    * @param $versionType
+    * @return array
+    */
+   private function dbGetVersionSpecBugIds ( $versionType )
+   {
+      $mysqli = vmApi::initializeDbConnection ();
+
+      $query = /** @lang sql */
+         'SELECT id FROM mantis_bug_table WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'';
+
+      $result = $mysqli->query ( $query );
+      $mysqli->close ();
+
+      $bugIds = array ();
+      if ( $result->num_rows != 0 )
+      {
+         while ( $row = $result->fetch_row () )
+         {
+            $bugIds[] = $row[ 0 ];
+         }
+      }
+
+      return $bugIds;
    }
 
    /**

@@ -2,19 +2,22 @@
 
 class VersionManagementPlugin extends MantisPlugin
 {
+   private $shortName = null;
+
    function register ()
    {
-      $this->name = 'VersionManagement';
+      $this->shortName = 'VersionManagement';
+      $this->name = 'Whiteboard.' . $this->shortName;
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.10';
+      $this->version = '1.0.11';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
       );
 
-      $this->author = 'Stefan Schwarz';
+      $this->author = 'cbb software GmbH (Rainer Dierck, Stefan Schwarz)';
       $this->contact = '';
       $this->url = 'https://github.com/Cre-ator';
    }
@@ -57,7 +60,7 @@ class VersionManagementPlugin extends MantisPlugin
    {
       if ( plugin_config_get ( 'show_footer' ) && $this->checkUserHasLevel () )
       {
-         return '<address>' . $this->name . '&nbsp;' . $this->version . '&nbsp;Copyright&nbsp;&copy;&nbsp;2016&nbsp;by&nbsp;' . $this->author . '</address>';
+         return '<address>' . $this->shortName . ' ' . $this->version . ' Copyright &copy; 2016 by ' . $this->author . '</address>';
       }
       return null;
    }
