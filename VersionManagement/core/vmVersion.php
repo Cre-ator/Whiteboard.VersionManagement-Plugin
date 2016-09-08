@@ -375,25 +375,29 @@ class vmVersion
    {
       $affectedBugIds = $this->dbGetProjectSpecBugIds ();
       $filterString = implode ( ',', $affectedBugIds );
+      $historyIds = array ();
 
-      $mysqli = vmApi::initializeDbConnection ();
+      if ( strlen ( $filterString ) != 0 )
+      {
+         $mysqli = vmApi::initializeDbConnection ();
 
-      $query = /** @lang sql */
-         'SELECT id 
+         $query = /** @lang sql */
+            'SELECT id 
          FROM mantis_bug_history_table 
          WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\') 
          bug_id IN (' . $filterString . ') 
          AND ' . $value . '= \'' . $this->versionOldName . '\'';
 
-      $result = $mysqli->query ( $query );
-      $mysqli->close ();
+         var_dump ( $query );
+         $result = $mysqli->query ( $query );
+         $mysqli->close ();
 
-      $historyIds = array ();
-      if ( $result->num_rows != 0 )
-      {
-         while ( $row = $result->fetch_row () )
+         if ( 0 != $result->num_rows )
          {
-            $historyIds[] = $row[ 0 ];
+            while ( $row = $result->fetch_row () )
+            {
+               $historyIds[] = $row[ 0 ];
+            }
          }
       }
 
