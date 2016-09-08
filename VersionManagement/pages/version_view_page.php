@@ -1,8 +1,8 @@
 <?php
-require_once ( __DIR__ . '/../core/vmApi.php' );
-require_once ( __DIR__ . '/../core/vmHtmlApi.php' );
-require_once ( __DIR__ . '/../core/vmVersionManager.php' );
-require_once ( __DIR__ . '/../core/vmVersion.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmHtmlApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmVersionManager.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmVersion.php' );
 
 processPage ();
 
@@ -52,7 +52,7 @@ function processContent ()
       vmHtmlApi::htmlVersionViewActionColumn ( $version );
       echo '</tr>';
    }
-   vmHtmlApi::htmlVersionViewTableClose ();
+   echo '</table>';
 
    /** foot */
    vmHtmlApi::htmlVersionViewFootTable ();
@@ -61,4 +61,3 @@ function processContent ()
       echo '</form>';
    }
 }
-

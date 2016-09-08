@@ -11,7 +11,7 @@ class VersionManagementPlugin extends MantisPlugin
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.14';
+      $this->version = '1.0.16';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
@@ -30,11 +30,6 @@ class VersionManagementPlugin extends MantisPlugin
          'EVENT_MENU_MAIN' => 'menu'
       );
       return $hooks;
-   }
-
-   function init ()
-   {
-      require_once ( __DIR__ . '/core/constant_api.php' );
    }
 
    function config ()
@@ -71,8 +66,7 @@ class VersionManagementPlugin extends MantisPlugin
          && plugin_config_get ( 'show_menu' ) && $this->checkUserHasLevel ()
       )
       {
-         $versionView = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
-         return $versionView;
+         return '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
       }
       return null;
    }

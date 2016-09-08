@@ -1,12 +1,42 @@
-.button
-{
+table[class="width75"] > tbody > tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
+
+table[class="width75"] > tbody > tr:nth-child(even) {
+    background-color: #d8d8d8;
+}
+
+table[class="width100"] > tbody > tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
+
+table[class="width100"] > tbody > tr:nth-child(even) {
+    background-color: #d8d8d8;
+}
+
+table[class="width100 top"] > tbody > tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
+
+table[class="width100 top"] > tbody > tr:nth-child(even) {
+    background-color: #d8d8d8;
+}
+
+.button {
     text-decoration: none;
 }
 
-tbody tr[class="new_row"]
-{
+tbody tr[class="new_row"] {
     background-color: #6d6d6d;
     color: #000000;
+}
+
+tr[class="footer"] {
+    background-color: #FFFFFF !important;
+}
+
+td[class="right"] {
+    background-color: #FFFFFF !important;
 }
 
 div.table {
@@ -48,4 +78,8 @@ div.table {
 
 div {
     padding: 1px;
+}
+
+table.top {
+    border-bottom: hidden;
 }

@@ -1,5 +1,5 @@
 <?php
-require_once ( __DIR__ . '/vmVersion.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'vmVersion.php' );
 
 /**
  * Class version_management_api
@@ -37,16 +37,6 @@ class vmApi
    }
 
    /**
-    * returns true, if the used mantis version is release 1.2.x
-    *
-    * @return bool
-    */
-   public static function checkMantisIsDeprecated ()
-   {
-      return substr ( MANTIS_VERSION, 0, 4 ) == '1.2.';
-   }
-
-   /**
     * returns true, if there is a duplicate entry.
     *
     * @param $array
@@ -64,7 +54,7 @@ class vmApi
     * @param $versionId
     * @return int
     */
-   public static function setBoolean ( $versionBoolIds, $versionId )
+   private static function setBoolean ( $versionBoolIds, $versionId )
    {
       /** initialize released and obsolete flag */
       $bool = 0;
@@ -284,7 +274,7 @@ class vmApi
     * @param $date
     * @return int
     */
-   public static function formatDate ( $date )
+   private static function formatDate ( $date )
    {
       if ( !is_numeric ( $date ) )
       {
@@ -312,7 +302,7 @@ class vmApi
     * @param $color
     * @return string
     */
-   public static function includeLeadingColorIdentifier ( $color )
+   private static function includeLeadingColorIdentifier ( $color )
    {
       if ( "#" == $color[ 0 ] )
       {

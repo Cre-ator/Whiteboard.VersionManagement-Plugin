@@ -1,5 +1,5 @@
 <?php
-require_once ( __DIR__ . '/vmApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'vmApi.php' );
 
 /**
  * provides methods for html output
@@ -11,14 +11,7 @@ class vmHtmlApi
     */
    public static function htmlConfigTableRow ()
    {
-      if ( vmApi::checkMantisIsDeprecated () )
-      {
-         echo '<tr ' . helper_alternate_class () . '>';
-      }
-      else
-      {
-         echo '<tr>';
-      }
+      echo '<tr>';
    }
 
    /**
@@ -53,9 +46,7 @@ class vmHtmlApi
     */
    public static function htmlConfigCategoryColumn ( $colspan, $rowspan, $langString )
    {
-      echo '<td class="category" colspan="' . $colspan . '" rowspan="' . $rowspan . '">';
-      echo plugin_lang_get ( $langString );
-      echo '</td>';
+      echo '<td class="category" colspan="' . $colspan . '" rowspan="' . $rowspan . '">' . plugin_lang_get ( $langString ) . '</td>';
    }
 
    /**
@@ -66,11 +57,7 @@ class vmHtmlApi
     */
    public static function htmlConfigTableTitleRow ( $colspan, $langString )
    {
-      echo '<tr>';
-      echo '<td class="form-title" colspan="' . $colspan . '">';
-      echo plugin_lang_get ( $langString );
-      echo '</td>';
-      echo '</tr>';
+      echo '<tr><td class="form-title" colspan="' . $colspan . '">' . plugin_lang_get ( $langString ) . '</td></tr>';
    }
 
    /**
@@ -106,7 +93,8 @@ class vmHtmlApi
    {
       echo '<td width="100px" colspan="' . $colspan . '">';
       echo '<label>';
-      echo '<input class="color {pickerFace:4,pickerClosable:true}" type="text" name="' . $name . '" value="' . plugin_config_get ( $name, $default ) . '" />';
+      echo '<input class="color {pickerFace:4,pickerClosable:true}" type="text" name="' . $name . '" value="' .
+         plugin_config_get ( $name, $default ) . '" />';
       echo '</label>';
       echo '</td>';
    }
@@ -122,10 +110,10 @@ class vmHtmlApi
       echo '<input type="hidden" name="version_id[]" value="' . $version->getVersionId () . '"/>';
       if ( $_GET[ "edit" ] == 1 )
       {
-         echo '<label for="proj-version-new-version">';
+         echo '<label>';
          echo '<span class="input" style="width:100%;">';
-         echo '<input type="text" id="proj-version-new-version" name="version_name[]" 
-         style="width:100%;" maxlength="64" value="' .
+         echo '<input type="text" name="version_name[]" 
+            style="width:100%;" maxlength="64" value="' .
             string_attribute ( $version->getVersionName () ) . '" />';
          echo '</span>';
          echo '</label>';
@@ -155,7 +143,7 @@ class vmHtmlApi
       if ( $_GET[ "edit" ] == 1 )
       {
          echo '<span class="checkbox">';
-         echo '<input type="checkbox" id="proj-version-released" name="version_released[]" value="' .
+         echo '<input type="checkbox" name="version_released[]" value="' .
             $version->getVersionId () . '"';
          check_checked ( $version->getReleased (), ON );
          echo '/>';
@@ -179,7 +167,7 @@ class vmHtmlApi
       if ( $_GET[ "edit" ] == 1 )
       {
          echo '<span class="checkbox">';
-         echo '<input type="checkbox" id="proj-version-obsolete" name="version_obsolete[]" value="' .
+         echo '<input type="checkbox" name="version_obsolete[]" value="' .
             $version->getVersionId () . '"';
          check_checked ( $version->getObsolete (), ON );
          echo '/>';
@@ -202,9 +190,9 @@ class vmHtmlApi
       echo '<td>';
       if ( $_GET[ "edit" ] == 1 )
       {
-         echo '<label for="proj-version-date-order">';
+         echo '<label>';
          echo '<span class="input">';
-         echo '<input type="text" id="proj-version-date-order" name="version_date_order[]"
+         echo '<input type="text" name="version_date_order[]"
          class="datetime" size="15" value="' .
             ( date_is_null ( $version->getDateOrder () ) ?
                '' : string_attribute ( date ( config_get ( 'calendar_date_format' ), $version->getDateOrder () ) ) ) . '" />';
@@ -230,7 +218,7 @@ class vmHtmlApi
       if ( $_GET[ "edit" ] == 1 )
       {
          echo '<span class="text">';
-         echo '<input type="text" id="proj-version-description" name="version_description[]" value="' .
+         echo '<input type="text" name="version_description[]" value="' .
             string_attribute ( $version->getDescription () ) . '"/>';
          echo '</span>';
       }
@@ -297,18 +285,6 @@ class vmHtmlApi
    }
 
    /**
-    * prints closing table tags
-    */
-   public static function htmlVersionViewTableClose ()
-   {
-      echo '</table>';
-      if ( !vmApi::checkMantisIsDeprecated () )
-      {
-         echo '</div>';
-      }
-   }
-
-   /**
     * prints the opening tags for a version row
     *
     * @param vmVersion $version
@@ -321,14 +297,7 @@ class vmHtmlApi
       }
       else
       {
-         if ( vmApi::checkMantisIsDeprecated () )
-         {
-            echo '<tr ' . helper_alternate_class () . '>';
-         }
-         else
-         {
-            echo '<tr>';
-         }
+         echo '<tr>';
       }
    }
 
@@ -337,9 +306,9 @@ class vmHtmlApi
     */
    public static function htmlVersionViewFootTable ()
    {
-      self::htmlVersionViewTableOpen ();
+      echo '<table class="width100">';
       echo '<tbody>';
-      echo '<tr>';
+      echo '<tr class="footer">';
       if ( $_GET[ "edit" ] == 1 )
       {
          $currentProjectId = helper_get_current_project ();
@@ -355,7 +324,8 @@ class vmHtmlApi
       echo '<td colspan="5" class="center">';
       if ( $_GET[ "edit" ] == 1 )
       {
-         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_update' ) . '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
+         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_update' ) .
+            '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit_done' ) . '" />';
          echo '</span>';
@@ -363,7 +333,8 @@ class vmHtmlApi
       }
       else
       {
-         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
+         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .
+            '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit' ) . '" />';
          echo '</span>';
@@ -372,23 +343,7 @@ class vmHtmlApi
       echo '</td>';
       echo '</tr>';
       echo '</tbody>';
-      self::htmlVersionViewTableClose ();
-   }
-
-   /**
-    * checks the mantis version and prints the opening table tags
-    */
-   public static function htmlVersionViewTableOpen ()
-   {
-      if ( vmApi::checkMantisIsDeprecated () )
-      {
-         echo '<table class="width100">';
-      }
-      else
-      {
-         echo '<div class="table-container">';
-         echo '<table>';
-      }
+      echo '</table>';
    }
 
    /**
@@ -400,15 +355,7 @@ class vmHtmlApi
       {
          echo '<form action="' . plugin_page ( 'version_view_update' ) . '" method="post">';
       }
-      if ( vmApi::checkMantisIsDeprecated () )
-      {
-         echo '<table id="version_view" class="width100">';
-      }
-      else
-      {
-         echo '<div class="table-container">';
-         echo '<table id="version_view">';
-      }
+      echo '<table id="version_view" class="width100 top">';
    }
 
    /**
@@ -416,8 +363,7 @@ class vmHtmlApi
     */
    public static function htmlVersionViewHeadTable ()
    {
-      self::htmlVersionViewTableOpen ();
-      echo '<thead>';
+      echo '<table class="width100 top">';
       echo '<tr>';
       echo '<td class="form-title">';
       echo plugin_lang_get ( 'version_view_title' );
@@ -425,13 +371,15 @@ class vmHtmlApi
       echo '<td class="right">';
       if ( $_GET[ "obsolete" ] == 1 )
       {
-         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=0">';
+         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .
+            '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=0">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_hide_obsolete' ) . '" />';
       }
       else
       {
-         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=1">';
+         echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .
+            '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=1">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_show_obsolete' ) . '" />';
       }
@@ -439,8 +387,7 @@ class vmHtmlApi
       echo '</a>';
       echo '</td>';
       echo '</tr>';
-      echo '</thead>';
-      self::htmlVersionViewTableClose ();
+      echo '</table>';
    }
 
    /**
@@ -465,28 +412,5 @@ class vmHtmlApi
       }
       echo '</tr>';
       echo '</thead>';
-   }
-
-   /** effort management */
-
-   /**
-    * @param $content
-    */
-   public static function htmlEffortViewColumn ( $content )
-   {
-      echo '<div class="td">' . $content . '</div>';
-   }
-
-   public static function htmlEffoertViewHeadRow ()
-   {
-      echo '<div class="tr">';
-      echo '<div class="td">' . lang_get ( 'version' ) . '</div>';
-      echo '<div class="td">' . plugin_lang_get ( 'effort_view_scheduled' ) . '</div>';
-      echo '<div class="td">' . plugin_lang_get ( 'effort_view_issuecount' ) . '</div>';
-      echo '<div class="td">&#931</div>'; # &#931 Summenzeichen
-      echo '<div class="td">' . plugin_lang_get ( 'effort_view_progress' ) . '</div>';
-      echo '<div class="td">' . plugin_lang_get ( 'effort_view_remaintime' ) . '</div>';
-      echo '<div class="td">' . plugin_lang_get ( 'effort_view_uncertainty' ) . '</div>';
-      echo '</div>';
    }
 }

@@ -1,7 +1,8 @@
 <?php
-require_once ( __DIR__ . '/vmApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'vmApi.php' );
 
 /**
+ * manages function which process multiple versions
  */
 class vmVersionManager
 {

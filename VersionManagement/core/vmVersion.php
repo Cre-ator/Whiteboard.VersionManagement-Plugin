@@ -1,5 +1,5 @@
 <?php
-require_once ( __DIR__ . '/vmApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'vmApi.php' );
 
 /**
  * Class vmVersion - represents a version object with
@@ -281,7 +281,9 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'SELECT * FROM mantis_project_version_table WHERE id=' . $this->versionId;
+         'SELECT * 
+         FROM mantis_project_version_table 
+         WHERE id=' . $this->versionId;
 
       $result = $mysqli->query ( $query );
       $dbVersionRow = mysqli_fetch_row ( $result );
@@ -289,7 +291,7 @@ class vmVersion
 
       $this->projectId = $dbVersionRow[ 1 ];
       $this->versionName = $dbVersionRow[ 2 ];
-      $this->versionOldName = $dbVersionRow[ 2 ];
+      $this->versionOldName = $this->versionName;
       $this->description = $dbVersionRow[ 3 ];
       $this->released = $dbVersionRow[ 4 ];
       $this->obsolete = $dbVersionRow[ 5 ];
@@ -377,8 +379,11 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'SELECT id FROM mantis_bug_history_table WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\')
-          bug_id IN (' . $filterString . ') AND ' . $value . ' = \'' . $this->versionOldName . '\'';
+         'SELECT id 
+         FROM mantis_bug_history_table 
+         WHERE field_name IN (\'version\', \'fixed_in_version\', \'target_version\') 
+         bug_id IN (' . $filterString . ') 
+         AND ' . $value . '= \'' . $this->versionOldName . '\'';
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
@@ -410,7 +415,7 @@ class vmVersion
 
          $query = /** @lang sql */
             'UPDATE mantis_bug_table
-            SET ' . $versionType . ' =\'' . $this->versionName . '\'
+            SET ' . $versionType . '=\'' . $this->versionName . '\'
             WHERE id=' . $affectedBugId;
 
          $mysqli->query ( $query );
@@ -429,8 +434,10 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'SELECT id FROM mantis_bug_table WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'
-         AND project_id = ' . $this->projectId;
+         'SELECT id 
+         FROM mantis_bug_table 
+         WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'
+         AND project_id=' . $this->projectId;
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
@@ -457,7 +464,9 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'SELECT id FROM mantis_bug_table WHERE project_id= ' . $this->projectId;
+         'SELECT id 
+         FROM mantis_bug_table 
+         WHERE project_id=' . $this->projectId;
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
@@ -482,7 +491,8 @@ class vmVersion
       $mysqli = vmApi::initializeDbConnection ();
 
       $query = /** @lang sql */
-         'DELETE FROM mantis_project_version_table WHERE id=' . $this->versionId;
+         'DELETE FROM mantis_project_version_table 
+         WHERE id=' . $this->versionId;
 
       $mysqli->query ( $query );
       $mysqli->close ();

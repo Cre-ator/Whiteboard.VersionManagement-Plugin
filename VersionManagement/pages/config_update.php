@@ -1,9 +1,7 @@
 <?php
-require_once ( __DIR__ . '/../core/constant_api.php' );
-require_once ( __DIR__ . '/../core/vmApi.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmApi.php' );
 
 auth_reauthenticate ();
-access_ensure_global_level ( config_get ( 'access_level' ) );
 
 $optionChange = gpc_get_bool ( 'config_change', false );
 

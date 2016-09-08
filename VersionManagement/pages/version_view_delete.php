@@ -1,5 +1,5 @@
 <?php
-require_once ( __DIR__ . '/../core/vmVersion.php' );
+require_once ( __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmVersion.php' );
 
 /**
  * authenticates a user and removes a version if user has level to do
