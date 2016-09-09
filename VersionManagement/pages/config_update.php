@@ -8,7 +8,9 @@ $optionChange = gpc_get_bool ( 'config_change', false );
 if ( $optionChange )
 {
    vmApi::updateSingleValue ( 'access_level', ADMINISTRATOR );
+   vmApi::editPluginInWhiteboardMenu ( 'plugin_access_level', gpc_get_int ( 'access_level', ADMINISTRATOR ) );
    vmApi::updateButton ( 'show_menu' );
+   vmApi::editPluginInWhiteboardMenu ( 'plugin_show_menu', gpc_get_int ( 'show_menu' ) );
    vmApi::updateButton ( 'show_footer' );
    vmApi::updateColor ( 'unused_version_row_color', '#908b2d' );
 }

@@ -11,7 +11,7 @@ class VersionManagementPlugin extends MantisPlugin
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.17';
+      $this->version = '1.0.18';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
@@ -43,6 +43,32 @@ class VersionManagementPlugin extends MantisPlugin
       );
    }
 
+   function schema ()
+   {
+      require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmApi.php' );
+      $tableArray = array ();
+
+      $whiteboardMenuTable = array
+      (
+         'CreateTableSQL', array ( plugin_table ( 'menu', 'whiteboard' ), "
+            id                   I       NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
+            plugin_name          C(250)  DEFAULT '',
+            plugin_access_level  I       UNSIGNED,
+            plugin_show_menu     I       UNSIGNED,
+            plugin_menu_path     C(250)  DEFAULT ''
+            " )
+      );
+
+      $boolArray = vmApi::checkWhiteboardTablesExist ();
+      # add whiteboardmenu table if it does not exist
+      if ( !$boolArray[ 0 ] )
+      {
+         array_push ( $tableArray, $whiteboardMenuTable );
+      }
+
+      return $tableArray;
+   }
+
    function checkUserHasLevel ()
    {
       $project_id = helper_get_current_project ();
@@ -62,6 +88,12 @@ class VersionManagementPlugin extends MantisPlugin
 
    function menu ()
    {
+      require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'vmApi.php' );
+      if ( !vmApi::checkPluginIsRegisteredInWhiteboardMenu () )
+      {
+         vmApi::addPluginToWhiteboardMenu ();
+      }
+
       if ( ( !plugin_is_installed ( 'WhiteboardMenu' ) || !file_exists ( config_get_global ( 'plugin_path' ) . 'WhiteboardMenu' ) )
          && plugin_config_get ( 'show_menu' ) && $this->checkUserHasLevel ()
       )
