@@ -370,7 +370,7 @@ class vmHtmlApi
       echo '<td class="form-title">';
       echo plugin_lang_get ( 'version_view_title' );
       echo '</td>';
-      echo '<td class="right">';
+      echo '<td class="form-title right">';
       if ( $_GET[ "obsolete" ] == 1 )
       {
          echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .

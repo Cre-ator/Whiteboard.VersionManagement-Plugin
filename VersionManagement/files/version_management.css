@@ -41,14 +41,14 @@ tr[class="footer"] {
     background-color: #FFFFFF !important;
 }
 
-td[class="right"] {
-    background-color: #FFFFFF !important;
-}
-
 div.table {
     display: table;
     border-collapse: collapse;
     width: 100%;
+}
+
+td.right {
+    text-align: right;
 }
 
 .tr {
