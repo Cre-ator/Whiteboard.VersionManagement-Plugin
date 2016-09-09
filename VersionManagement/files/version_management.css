@@ -22,6 +22,12 @@ table[class="width100 top"] > tbody > tr:nth-child(even) {
     background-color: #d8d8d8;
 }
 
+a {
+    color: black;
+    background: transparent;
+    text-decoration: none;
+}
+
 .button {
     text-decoration: none;
 }
@@ -82,4 +88,9 @@ div {
 
 table.top {
     border-bottom: hidden;
+}
+
+.symbol {
+    height: 12px;
+    width: 12px;
 }

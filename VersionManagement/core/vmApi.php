@@ -95,7 +95,7 @@ class vmApi
       $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
       $pluginAccessLevel = ADMINISTRATOR;
       $pluginShowMenu = ON;
-      $pluginMenuPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+      $pluginMenuPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=0&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
 
       $mysqli = self::initializeDbConnection ();
 
@@ -512,5 +512,60 @@ class vmApi
       }
 
       return $obsolete;
+   }
+
+   /**
+    * @author mantis bt team
+    *
+    * Return all versions for the specified project, including subprojects
+    * @param int $p_project_id
+    * @param int $p_released
+    * @param bool $p_obsolete
+    * @return array
+    */
+   public static function versionGetAllRowsWithSubsNameAsc ( $p_project_id, $p_released = null, $p_obsolete = false )
+   {
+      $t_project_where = helper_project_specific_where ( $p_project_id );
+
+      $t_param_count = 0;
+      $t_query_params = array ();
+
+      if ( $p_released === null )
+      {
+         $t_released_where = '';
+      }
+      else
+      {
+         $c_released = db_prepare_int ( $p_released );
+         $t_released_where = "AND ( released = " . db_param ( $t_param_count++ ) . " )";
+         $t_query_params[] = $c_released;
+      }
+
+      if ( $p_obsolete === null )
+      {
+         $t_obsolete_where = '';
+      }
+      else
+      {
+         $c_obsolete = db_prepare_bool ( $p_obsolete );
+         $t_obsolete_where = "AND ( obsolete = " . db_param ( $t_param_count++ ) . " )";
+         $t_query_params[] = $c_obsolete;
+      }
+
+      $t_project_version_table = db_get_table ( 'mantis_project_version_table' );
+
+      $query = "SELECT *
+				  FROM $t_project_version_table
+				  WHERE $t_project_where $t_released_where $t_obsolete_where
+				  ORDER BY version ASC";
+      $result = db_query_bound ( $query, $t_query_params );
+      $count = db_num_rows ( $result );
+      $rows = array ();
+      for ( $i = 0; $i < $count; $i++ )
+      {
+         $row = db_fetch_array ( $result );
+         $rows[] = $row;
+      }
+      return $rows;
    }
 }

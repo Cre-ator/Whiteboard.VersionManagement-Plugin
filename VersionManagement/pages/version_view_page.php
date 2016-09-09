@@ -33,7 +33,14 @@ function processContent ()
    vmHtmlApi::htmlVersionViewMainTableOpen ();
    vmHtmlApi::htmlVersionViewMainTableHead ();
    $currentProjectId = helper_get_current_project ();
-   $versions = version_get_all_rows_with_subs ( $currentProjectId, null, vmApi::getObsoleteValue () );
+   if ( $_GET[ 'sort' ] == 1 )
+   {
+      $versions = vmApi::versionGetAllRowsWithSubsNameAsc ( $currentProjectId, null, vmApi::getObsoleteValue () );
+   }
+   else
+   {
+      $versions = version_get_all_rows_with_subs ( $currentProjectId, null, vmApi::getObsoleteValue () );
+   }
 
    foreach ( $versions as $versionArray )
    {
