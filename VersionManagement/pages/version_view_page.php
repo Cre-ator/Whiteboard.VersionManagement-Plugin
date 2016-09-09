@@ -17,7 +17,6 @@ function processPage ()
    vmHtmlApi::htmlPluginTriggerWhiteboardMenu ();
 
    echo '<div align="center">';
-   echo '<hr size="1" width="100%" />';
    processContent ();
    echo '</div>';
 
