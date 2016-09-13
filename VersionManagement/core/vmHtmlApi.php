@@ -238,7 +238,7 @@ class vmHtmlApi
     */
    public static function htmlVersionViewDocumentTypeColumn ( vmVersion $version )
    {
-      require_once ( __DIR__ . '/../../SpecManagement/core/specmanagement_database_api.php' );
+      require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
       $dManagementDbApi = new specmanagement_database_api();
 
       $typeId = $dManagementDbApi->get_type_by_version ( $version->getVersionId () );
