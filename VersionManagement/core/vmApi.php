@@ -568,4 +568,28 @@ class vmApi
       }
       return $rows;
    }
+
+   /**
+    * returns access level for projectid and userid pair
+    *
+    * @param $projectId
+    * @param $userId
+    * @return null
+    */
+   public static function getProjectUserAccessLevel ( $projectId, $userId )
+   {
+      $mysqli = self::initializeDbConnection ();
+
+      $query = /** @lang sql */
+         'SELECT access_level FROM mantis_project_user_list_table
+         WHERE project_id=' . $projectId . ' AND user_id=' . $userId;
+
+      $result = $mysqli->query ( $query );
+      $mysqli->close ();
+      if ( $result->num_rows != 0 )
+      {
+         return mysqli_fetch_row ( $result )[ 0 ];
+      }
+      return null;
+   }
 }

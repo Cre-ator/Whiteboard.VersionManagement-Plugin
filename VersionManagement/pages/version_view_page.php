@@ -33,6 +33,7 @@ function processContent ()
    vmHtmlApi::htmlVersionViewMainTableOpen ();
    vmHtmlApi::htmlVersionViewMainTableHead ();
    $currentProjectId = helper_get_current_project ();
+   $userId = auth_get_current_user_id ();
    if ( $_GET[ 'sort' ] == 1 )
    {
       $versions = vmApi::versionGetAllRowsWithSubsNameAsc ( $currentProjectId, null, vmApi::getObsoleteValue () );
@@ -45,18 +46,24 @@ function processContent ()
    foreach ( $versions as $versionArray )
    {
       $version = new vmVersion( $versionArray[ 'id' ] );
-      vmHtmlApi::htmlVersionViewRowOpen ( $version );
-      vmHtmlApi::htmlVersionViewNameColumn ( $version );
-      vmHtmlApi::htmlVersionViewReleasedColumn ( $version );
-      vmHtmlApi::htmlVersionViewObsoleteColumn ( $version );
-      vmHtmlApi::htmlVersionViewDateOrderColumn ( $version );
-      vmHtmlApi::htmlVersionViewDescriptionColumn ( $version );
-      if ( vmApi::checkDMManagementPluginIsInstalled () )
+      $versionProjectId = $version->getProjectId ();
+      $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $versionProjectId, $userId );
+      $pluginAccessLevel = plugin_config_get ( 'access_level' );
+      if ( ( $versionAccessLevel >= $pluginAccessLevel ) || ( user_is_administrator ( $userId ) ) )
       {
-         vmHtmlApi::htmlVersionViewDocumentTypeColumn ( $version );
+         vmHtmlApi::htmlVersionViewRowOpen ( $version );
+         vmHtmlApi::htmlVersionViewNameColumn ( $version );
+         vmHtmlApi::htmlVersionViewReleasedColumn ( $version );
+         vmHtmlApi::htmlVersionViewObsoleteColumn ( $version );
+         vmHtmlApi::htmlVersionViewDateOrderColumn ( $version );
+         vmHtmlApi::htmlVersionViewDescriptionColumn ( $version );
+         if ( vmApi::checkDMManagementPluginIsInstalled () )
+         {
+            vmHtmlApi::htmlVersionViewDocumentTypeColumn ( $version );
+         }
+         vmHtmlApi::htmlVersionViewActionColumn ( $version );
+         echo '</tr>';
       }
-      vmHtmlApi::htmlVersionViewActionColumn ( $version );
-      echo '</tr>';
    }
    echo '</table>';
 
