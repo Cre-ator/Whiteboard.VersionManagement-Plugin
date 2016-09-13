@@ -327,7 +327,7 @@ class vmApi
          /** update version document type */
          if ( !empty( $postVersionDocumentType ) )
          {
-            require_once ( __DIR__ . '/../../SpecManagement/core/specmanagement_database_api.php' );
+            require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
             $specmanagementDatabaseApi = new specmanagement_database_api();
             $versionProjectId = $version->getProjectId ();
             if ( strlen ( $versionDocumentType ) > 0 )

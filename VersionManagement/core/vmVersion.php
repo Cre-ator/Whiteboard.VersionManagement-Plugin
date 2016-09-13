@@ -388,7 +388,6 @@ class vmVersion
          bug_id IN (' . $filterString . ') 
          AND ' . $value . '= \'' . $this->versionOldName . '\'';
 
-         var_dump ( $query );
          $result = $mysqli->query ( $query );
          $mysqli->close ();
 

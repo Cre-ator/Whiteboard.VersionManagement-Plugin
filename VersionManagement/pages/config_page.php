@@ -14,7 +14,6 @@ echo '<link rel="stylesheet" href="plugins/VersionManagement/files/version_manag
 
 echo '<br/>';
 echo '<form action="' . plugin_page ( 'config_update' ) . '" method="post">';
-echo form_security_field ( 'plugin_SpecManagement_config_update' );
 echo '<table align="center" class="width75" cellspacing="1">';
 /** General configuration */
 vmHtmlApi::htmlConfigTableTitleRow ( 2, 'config_page_general' );
