@@ -400,15 +400,27 @@ class vmHtmlApi
       echo '<thead>';
       echo '<tr class="row-category2">';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_version' ) .
+         # sort asc by version
          '<a href="' . plugin_page ( 'version_view_page' ) .
-         '&amp;sort=1&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_ascending2.png"></a></th>';
+         '&amp;sort=vasc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_ascending2.png"></a>' .
+         # sort desc by version
+         '<a href="' . plugin_page ( 'version_view_page' ) .
+         '&amp;sort=vdesc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_descending2.png"></a>' .
+         '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_released' ) . '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_obsolete' ) . '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_date' ) .
+         # sort asc by date
          '<a href="' . plugin_page ( 'version_view_page' ) .
-         '&amp;sort=0&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_19_descending.png"></a></th>';
+         '&amp;sort=dasc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_19_ascending.png"></a>' .
+         # sort desc by date
+         '<a href="' . plugin_page ( 'version_view_page' ) .
+         '&amp;sort=ddesc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_19_descending.png"></a>' .
+         '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_description' ) . '</th>';
       if ( vmApi::checkDMManagementPluginIsInstalled () )
       {

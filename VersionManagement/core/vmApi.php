@@ -95,7 +95,7 @@ class vmApi
       $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
       $pluginAccessLevel = ADMINISTRATOR;
       $pluginShowMenu = ON;
-      $pluginMenuPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=0&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+      $pluginMenuPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=ddesc&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
 
       $mysqli = self::initializeDbConnection ();
 
@@ -521,9 +521,10 @@ class vmApi
     * @param int $p_project_id
     * @param int $p_released
     * @param bool $p_obsolete
+    * @param $sort
     * @return array
     */
-   public static function versionGetAllRowsWithSubsNameAsc ( $p_project_id, $p_released = null, $p_obsolete = false )
+   public static function versionGetAllRowsWithSubsIndSort ( $p_project_id, $p_released = null, $p_obsolete = false, $sort = 'ddesc' )
    {
       $t_project_where = helper_project_specific_where ( $p_project_id );
 
@@ -554,10 +555,28 @@ class vmApi
 
       $t_project_version_table = db_get_table ( 'mantis_project_version_table' );
 
-      $query = "SELECT *
-				  FROM $t_project_version_table
-				  WHERE $t_project_where $t_released_where $t_obsolete_where
-				  ORDER BY version ASC";
+      $query = /** @lang sql */
+         "SELECT * FROM $t_project_version_table
+				    WHERE $t_project_where $t_released_where $t_obsolete_where";
+      switch ( $sort )
+      {
+         case 'vasc':
+            $query .= "ORDER BY version ASC";
+            break;
+         case 'vdesc':
+            $query .= "ORDER BY version DESC";
+            break;
+         case 'dasc':
+            $query .= "ORDER BY date_order ASC";
+            break;
+         case 'ddesc':
+            $query .= "ORDER BY date_order DESC";
+            break;
+         default:
+            $query .= "ORDER BY date_order DESC";
+            break;
+      }
+
       $result = db_query_bound ( $query, $t_query_params );
       $count = db_num_rows ( $result );
       $rows = array ();

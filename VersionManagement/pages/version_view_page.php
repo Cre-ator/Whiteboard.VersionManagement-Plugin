@@ -34,15 +34,7 @@ function processContent ()
    vmHtmlApi::htmlVersionViewMainTableHead ();
    $currentProjectId = helper_get_current_project ();
    $userId = auth_get_current_user_id ();
-   if ( $_GET[ 'sort' ] == 1 )
-   {
-      $versions = vmApi::versionGetAllRowsWithSubsNameAsc ( $currentProjectId, null, vmApi::getObsoleteValue () );
-   }
-   else
-   {
-      $versions = version_get_all_rows_with_subs ( $currentProjectId, null, vmApi::getObsoleteValue () );
-   }
-
+   $versions = vmApi::versionGetAllRowsWithSubsIndSort ( $currentProjectId, null, vmApi::getObsoleteValue (), $_GET[ 'sort' ] );
    foreach ( $versions as $versionArray )
    {
       $version = new vmVersion( $versionArray[ 'id' ] );
