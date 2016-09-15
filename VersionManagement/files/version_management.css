@@ -14,11 +14,11 @@ table[class="width100"] > tbody > tr:nth-child(even) {
     background-color: #d8d8d8;
 }
 
-table[class="width100 top"] > tbody > tr:nth-child(odd) {
+table[class="width100 down"] > tbody > tr:nth-child(odd) {
     background-color: #e8e8e8;
 }
 
-table[class="width100 top"] > tbody > tr:nth-child(even) {
+table[class="width100 down"] > tbody > tr:nth-child(even) {
     background-color: #d8d8d8;
 }
 
@@ -86,8 +86,8 @@ div {
     padding: 1px;
 }
 
-table.top {
-    border-bottom: hidden;
+table.down {
+    border-top: hidden;
 }
 
 .symbol {

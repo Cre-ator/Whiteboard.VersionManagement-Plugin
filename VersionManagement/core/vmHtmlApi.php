@@ -308,7 +308,7 @@ class vmHtmlApi
     */
    public static function htmlVersionViewFootTable ()
    {
-      echo '<table class="width100">';
+      echo '<table class="width100 down">';
       echo '<tbody>';
       echo '<tr class="footer">';
       if ( $_GET[ 'edit' ] == 1 )
@@ -358,7 +358,7 @@ class vmHtmlApi
       {
          echo '<form action="' . plugin_page ( 'version_view_update' ) . '" method="post">';
       }
-      echo '<table id="version_view" class="width100 top">';
+      echo '<table id="version_view" class="width100 down">';
    }
 
    /**
@@ -366,7 +366,7 @@ class vmHtmlApi
     */
    public static function htmlVersionViewHeadTable ()
    {
-      echo '<table class="width100 top">';
+      echo '<table class="width100">';
       echo '<tr>';
       echo '<td class="form-title">';
       echo plugin_lang_get ( 'version_view_title' );

@@ -20,7 +20,17 @@ vmHtmlApi::htmlConfigTableTitleRow ( 2, 'config_page_general' );
 /** Access level */
 vmHtmlApi::htmlConfigTableRow ();
 echo '<td class="category">';
-echo '<span class="required">*</span>' . plugin_lang_get ( 'config_page_access_level' );
+echo '<span class="required">*</span>' . plugin_lang_get ( 'config_page_read_access_level' );
+echo '</td>';
+echo '<td width="100px" colspan="2">';
+echo '<select name="r_access_level">';
+print_enum_string_option_list ( 'access_levels', plugin_config_get ( 'r_access_level', ADMINISTRATOR ) );
+echo '</select>';
+echo '</td>';
+echo '</tr>';
+vmHtmlApi::htmlConfigTableRow ();
+echo '<td class="category">';
+echo '<span class="required">*</span>' . plugin_lang_get ( 'config_page_write_access_level' );
 echo '</td>';
 echo '<td width="100px" colspan="2">';
 echo '<select name="access_level">';

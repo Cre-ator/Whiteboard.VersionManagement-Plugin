@@ -35,13 +35,16 @@ function processContent ()
    $currentProjectId = helper_get_current_project ();
    $userId = auth_get_current_user_id ();
    $versions = vmApi::versionGetAllRowsWithSubsIndSort ( $currentProjectId, null, vmApi::getObsoleteValue (), $_GET[ 'sort' ] );
+   $pluginReadAccessLevel = plugin_config_get ( 'r_access_level' );
+   $pluginWriteAccessLevel = plugin_config_get ( 'access_level' );
+   $showFootTable = false;
    foreach ( $versions as $versionArray )
    {
       $version = new vmVersion( $versionArray[ 'id' ] );
       $versionProjectId = $version->getProjectId ();
       $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $versionProjectId, $userId );
-      $pluginAccessLevel = plugin_config_get ( 'access_level' );
-      if ( ( $versionAccessLevel >= $pluginAccessLevel ) || ( user_is_administrator ( $userId ) ) )
+
+      if ( ( $versionAccessLevel >= $pluginReadAccessLevel ) || ( user_is_administrator ( $userId ) ) )
       {
          vmHtmlApi::htmlVersionViewRowOpen ( $version );
          vmHtmlApi::htmlVersionViewNameColumn ( $version );
@@ -53,14 +56,25 @@ function processContent ()
          {
             vmHtmlApi::htmlVersionViewDocumentTypeColumn ( $version );
          }
-         vmHtmlApi::htmlVersionViewActionColumn ( $version );
+         if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
+         {
+            vmHtmlApi::htmlVersionViewActionColumn ( $version );
+            $showFootTable = true;
+         }
+         else
+         {
+            echo '<td></td>';
+         }
          echo '</tr>';
       }
    }
    echo '</table>';
 
    /** foot */
-   vmHtmlApi::htmlVersionViewFootTable ();
+   if ( $showFootTable )
+   {
+      vmHtmlApi::htmlVersionViewFootTable ();
+   }
    if ( $_GET[ "edit" ] == 1 )
    {
       echo '</form>';
