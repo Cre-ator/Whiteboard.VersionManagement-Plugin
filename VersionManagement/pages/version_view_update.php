@@ -43,5 +43,5 @@ function update ()
       vmApi::setNewVersionData ( null, $versionNames );
    }
    /** redirect to view page */
-   print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&edit=0&obsolete=0' );
+   print_successful_redirect ( plugin_page ( 'version_view_page', true ) . '&amp;sort=' . $_POST[ 'sort' ] . '&amp;edit=0&amp;obsolete=0' );
 }

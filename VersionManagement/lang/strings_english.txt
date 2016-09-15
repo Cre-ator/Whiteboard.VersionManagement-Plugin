@@ -1,0 +1,24 @@
+<?php
+
+$s_plugin_VersionManagement_menu_title = 'Version Management';
+$s_plugin_VersionManagement_version_view_title = 'Versions';
+
+$s_plugin_VersionManagement_version_view_table_head_version = 'Version';
+$s_plugin_VersionManagement_version_view_table_head_released = 'Published';
+$s_plugin_VersionManagement_version_view_table_head_obsolete = 'Obsolete';
+$s_plugin_VersionManagement_version_view_table_head_date = 'Date';
+$s_plugin_VersionManagement_version_view_table_head_description = 'Description';
+$s_plugin_VersionManagement_version_view_table_head_type = 'Document Type';
+$s_plugin_VersionManagement_version_view_table_head_action = 'Action';
+$s_plugin_VersionManagement_version_view_table_head_show_obsolete = 'Show obsolete versions';
+$s_plugin_VersionManagement_version_view_table_head_hide_obsolete = 'Hide obsolete versions';
+$s_plugin_VersionManagement_version_view_table_foot_edit = 'edit versions';
+$s_plugin_VersionManagement_version_view_table_foot_edit_done = 'Confirm changes';
+
+$s_plugin_VersionManagement_config_page_title = 'Version Management Configuration';
+$s_plugin_VersionManagement_config_page_general = 'General Configuration';
+$s_plugin_VersionManagement_config_page_access_level = 'Plugin Access Level';
+$s_plugin_VersionManagement_config_page_show_menu = 'Show menu';
+$s_plugin_VersionManagement_config_page_show_footer = 'Show plugin information in footer';
+$s_plugin_VersionManagement_config_page_version_overview = 'Version Overview Configuration';
+$s_plugin_VersionManagement_config_page_unused_version_row_color = 'Highlight unused versions';

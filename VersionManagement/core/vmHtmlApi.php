@@ -311,7 +311,7 @@ class vmHtmlApi
       echo '<table class="width100">';
       echo '<tbody>';
       echo '<tr class="footer">';
-      if ( $_GET[ "edit" ] == 1 )
+      if ( $_GET[ 'edit' ] == 1 )
       {
          $currentProjectId = helper_get_current_project ();
          $versions = version_get_all_rows_with_subs ( $currentProjectId, null, vmApi::getObsoleteValue () );
@@ -324,11 +324,12 @@ class vmHtmlApi
       }
 
       echo '<td colspan="5" class="center">';
-      if ( $_GET[ "edit" ] == 1 )
+      if ( $_GET[ 'edit' ] == 1 )
       {
          echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_update' ) .
             '&amp;sort=' . $_GET[ 'sort' ] . '&amp;edit=1&amp;obsolete=' . $_GET[ 'obsolete' ] . '">';
          echo '<span class="input">';
+         echo '<input type="hidden" name="sort" value="' . $_GET[ 'sort' ] . '" />';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_foot_edit_done' ) . '" />';
          echo '</span>';
          echo '</a>';
@@ -374,14 +375,14 @@ class vmHtmlApi
       if ( $_GET[ "obsolete" ] == 1 )
       {
          echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .
-            '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=0">';
+            '&amp;sort=' . $_GET[ "sort" ] . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=0">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_hide_obsolete' ) . '" />';
       }
       else
       {
          echo '<a style="text-decoration: none;" href="' . plugin_page ( 'version_view_page' ) .
-            '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=1">';
+            '&amp;sort=' . $_GET[ "sort" ] . '&amp;edit=' . $_GET[ "edit" ] . '&amp;obsolete=1">';
          echo '<span class="input">';
          echo '<input type="submit" value="' . plugin_lang_get ( 'version_view_table_head_show_obsolete' ) . '" />';
       }
@@ -403,11 +404,11 @@ class vmHtmlApi
          # sort asc by version
          '<a href="' . plugin_page ( 'version_view_page' ) .
          '&amp;sort=vasc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_ascending2.png"></a>' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_asc.png"></a>' .
          # sort desc by version
          '<a href="' . plugin_page ( 'version_view_page' ) .
          '&amp;sort=vdesc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_descending2.png"></a>' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_des.png"></a>' .
          '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_released' ) . '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_obsolete' ) . '</th>';
@@ -415,11 +416,11 @@ class vmHtmlApi
          # sort asc by date
          '<a href="' . plugin_page ( 'version_view_page' ) .
          '&amp;sort=dasc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_19_ascending.png"></a>' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_asc.png"></a>' .
          # sort desc by date
          '<a href="' . plugin_page ( 'version_view_page' ) .
          '&amp;sort=ddesc&amp;edit=' . $_GET[ 'edit' ] . '&amp;obsolete=' . $_GET[ 'obsolete' ] . '">&nbsp;' .
-         '<img class="symbol" src="plugins/VersionManagement/files/sort_19_descending.png"></a>' .
+         '<img class="symbol" src="plugins/VersionManagement/files/sort_az_des.png"></a>' .
          '</th>';
       echo '<th>' . plugin_lang_get ( 'version_view_table_head_description' ) . '</th>';
       if ( vmApi::checkDMManagementPluginIsInstalled () )

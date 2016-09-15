@@ -11,7 +11,7 @@ class VersionManagementPlugin extends MantisPlugin
       $this->description = 'Extended view and more options for the MantisBT version management';
       $this->page = 'config_page';
 
-      $this->version = '1.0.28';
+      $this->version = '1.0.29';
       $this->requires = array
       (
          'MantisCore' => '1.2.0, <= 1.3.99'
