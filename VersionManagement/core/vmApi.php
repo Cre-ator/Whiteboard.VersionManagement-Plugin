@@ -98,7 +98,7 @@ class vmApi
       $pluginName = plugin_get_current ();
       $pluginAccessLevel = ADMINISTRATOR;
       $pluginShowMenu = ON;
-      $pluginPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=ddesc&amp;edit=0&amp;obsolete=0">';
+      $pluginPath = plugin_page ( 'version_view_page' ) . '&amp;sort=ddesc&amp;edit=0&amp;obsolete=0';
 
       $mysqli = self::initializeDbConnection ();
 
