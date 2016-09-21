@@ -66,13 +66,11 @@ class vmApi
 
    public static function checkPluginIsRegisteredInWhiteboardMenu ()
    {
-      $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
-
       $mysqli = self::initializeDbConnection ();
 
       $query = /** @lang sql */
          'SELECT COUNT(id) FROM mantis_plugin_whiteboard_menu_table
-         WHERE plugin_name=\'' . $pluginName . '\'';
+         WHERE plugin_name=\'' . plugin_get_current () . '\'';
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
@@ -83,8 +81,13 @@ class vmApi
          {
             return true;
          }
+         else
+         {
+            return false;
+         }
       }
-      return false;
+
+      return null;
    }
 
    /**
@@ -92,16 +95,16 @@ class vmApi
     */
    public static function addPluginToWhiteboardMenu ()
    {
-      $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
+      $pluginName = plugin_get_current ();
       $pluginAccessLevel = ADMINISTRATOR;
       $pluginShowMenu = ON;
-      $pluginMenuPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=ddesc&amp;edit=0&amp;obsolete=0">' . plugin_lang_get ( 'menu_title' ) . '</a >';
+      $pluginPath = '<a href="' . plugin_page ( 'version_view_page' ) . '&amp;sort=ddesc&amp;edit=0&amp;obsolete=0">';
 
       $mysqli = self::initializeDbConnection ();
 
       $query = /** @lang sql */
          'INSERT INTO mantis_plugin_whiteboard_menu_table (id, plugin_name, plugin_access_level, plugin_show_menu, plugin_menu_path)
-         SELECT null,\'' . $pluginName . '\',' . $pluginAccessLevel . ',' . $pluginShowMenu . ',\'' . $pluginMenuPath . '\'
+         SELECT null,\'' . $pluginName . '\',' . $pluginAccessLevel . ',' . $pluginShowMenu . ',\'' . $pluginPath . '\'
          FROM DUAL WHERE NOT EXISTS (
          SELECT 1 FROM mantis_plugin_whiteboard_menu_table
          WHERE plugin_name=\'' . $pluginName . '\')';
@@ -118,14 +121,12 @@ class vmApi
     */
    public static function editPluginInWhiteboardMenu ( $field, $value )
    {
-      $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
-
       $mysqli = self::initializeDbConnection ();
 
       $query = /** @lang sql */
          'UPDATE mantis_plugin_whiteboard_menu_table
          SET ' . $field . '=\'' . $value . '\'
-         WHERE plugin_name =\'' . $pluginName . '\'';
+         WHERE plugin_name=\'' . plugin_get_current () . '\'';
 
       $mysqli->query ( $query );
       $mysqli->close ();
@@ -136,13 +137,11 @@ class vmApi
     */
    public static function removePluginFromWhiteboardMenu ()
    {
-      $pluginName = plugin_lang_get ( 'menu_title', 'VersionManagement' );
-
       $mysqli = self::initializeDbConnection ();
 
       $query = /** @lang sql */
          'DELETE FROM mantis_plugin_whiteboard_menu_table
-         WHERE plugin_name=\'' . $pluginName . '\'';
+         WHERE plugin_name=\'' . plugin_get_current () . '\'';
 
       $mysqli->query ( $query );
       $mysqli->close ();
