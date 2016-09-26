@@ -37,34 +37,45 @@ function processContent ()
    $pluginReadAccessLevel = plugin_config_get ( 'r_access_level' );
    $pluginWriteAccessLevel = plugin_config_get ( 'access_level' );
    $showFootTable = false;
-   foreach ( $versions as $versionArray )
+   if (0 != count ( $versions ) )
    {
-      $version = new vmVersion( $versionArray[ 'id' ] );
-      $versionProjectId = $version->getProjectId ();
-      $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $versionProjectId, $userId );
-
-      if ( ( $versionAccessLevel >= $pluginReadAccessLevel ) || ( user_is_administrator ( $userId ) ) )
+      foreach ( $versions as $versionArray )
       {
-         vmHtmlApi::htmlVersionViewRowOpen ( $version );
-         vmHtmlApi::htmlVersionViewNameColumn ( $version );
-         vmHtmlApi::htmlVersionViewReleasedColumn ( $version );
-         vmHtmlApi::htmlVersionViewObsoleteColumn ( $version );
-         vmHtmlApi::htmlVersionViewDateOrderColumn ( $version );
-         vmHtmlApi::htmlVersionViewDescriptionColumn ( $version );
-         if ( vmApi::checkDMManagementPluginIsInstalled () )
+         $version = new vmVersion( $versionArray[ 'id' ] );
+         $versionProjectId = $version->getProjectId ();
+         $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $versionProjectId, $userId );
+
+         if ( ( $versionAccessLevel >= $pluginReadAccessLevel ) || ( user_is_administrator ( $userId ) ) )
          {
-            vmHtmlApi::htmlVersionViewDocumentTypeColumn ( $version );
+            vmHtmlApi::htmlVersionViewRowOpen ( $version );
+            vmHtmlApi::htmlVersionViewNameColumn ( $version );
+            vmHtmlApi::htmlVersionViewReleasedColumn ( $version );
+            vmHtmlApi::htmlVersionViewObsoleteColumn ( $version );
+            vmHtmlApi::htmlVersionViewDateOrderColumn ( $version );
+            vmHtmlApi::htmlVersionViewDescriptionColumn ( $version );
+            if ( vmApi::checkDMManagementPluginIsInstalled () )
+            {
+               vmHtmlApi::htmlVersionViewDocumentTypeColumn ( $version );
+            }
+            if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
+            {
+               vmHtmlApi::htmlVersionViewActionColumn ( $version );
+               $showFootTable = true;
+            }
+            else
+            {
+               echo '<td></td>';
+            }
+            echo '</tr>';
          }
-         if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
-         {
-            vmHtmlApi::htmlVersionViewActionColumn ( $version );
-            $showFootTable = true;
-         }
-         else
-         {
-            echo '<td></td>';
-         }
-         echo '</tr>';
+      }
+   }
+   else
+   {
+      $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $currentProjectId, $userId );
+      if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
+      {
+         $showFootTable = true;
       }
    }
    echo '</table>';
