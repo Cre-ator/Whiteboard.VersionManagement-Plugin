@@ -154,14 +154,7 @@ class vmApi
     */
    public static function checkDMManagementPluginIsInstalled ()
    {
-      return
-         (  (  plugin_is_installed ( 'DocumentManagement' ) 
-            && file_exists ( config_get_global ( 'plugin_path' ) . 'DocumentManagement' )
-            )
-         || (  plugin_is_installed ( 'SpecManagement' ) 
-            && file_exists ( config_get_global ( 'plugin_path' ) . 'SpecManagement' )
-            )
-         );
+      return plugin_is_installed ( 'DocumentManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'DocumentManagement' );
    }
 
    /**
