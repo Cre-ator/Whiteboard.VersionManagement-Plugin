@@ -360,11 +360,14 @@ class vmApi
 
       if ( count ( $versionNames ) > count ( $versionIds ) )
       {
+         $checkBoxVersionIndex = 0;
          for ( $index = $newVersionIndex; $index < count ( $versionNames ); $index++ )
          {
             $newVersionName = trim ( $versionNames[ $index ] );
             $newVersionDateOrder = self::formatDate ( $postVersionDateOrder[ $index ] );
             $newVersionDescription = trim ( $postVersionDescription[ $index ] );
+            $newVersionReleased = $_POST[ 'newVersionReleased' . $checkBoxVersionIndex ];
+            $newVersionObsolete = $_POST[ 'newVersionObsolete' . $checkBoxVersionIndex ];
 
             if ( strlen ( $newVersionName ) > 0 )
             {
@@ -375,8 +378,8 @@ class vmApi
                   $newVersion->setProjectId ( $currentProjectId );
                   $newVersion->setVersionName ( $newVersionName );
                   $newVersion->setDescription ( $newVersionDescription );
-                  $newVersion->setReleased ( 0 );
-                  $newVersion->setObsolete ( 0 );
+                  $newVersion->setReleased ( self::setNewVersionCheckBox ( $newVersionReleased ) );
+                  $newVersion->setObsolete ( self::setNewVersionCheckBox ( $newVersionObsolete ) );
                   $newVersion->setDateOrder ( $newVersionDateOrder );
                   $newVersion->triggerInsertIntoDb ();
 
@@ -384,7 +387,27 @@ class vmApi
                   event_signal ( 'EVENT_MANAGE_VERSION_UPDATE', array ( $newVersion->getVersionId () ) );
                }
             }
+
+            $checkBoxVersionIndex++;
          }
+      }
+   }
+
+   /**
+    * returns int value for true/false of input checkbox value
+    *
+    * @param $checkBoxValue
+    * @return int
+    */
+   private static function setNewVersionCheckBox ( $checkBoxValue )
+   {
+      if ( $checkBoxValue == 'on' )
+      {
+         return 1;
+      }
+      else
+      {
+         return 0;
       }
    }
 
