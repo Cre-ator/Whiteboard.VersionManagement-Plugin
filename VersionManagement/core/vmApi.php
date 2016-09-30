@@ -56,11 +56,11 @@ class vmApi
       $mysqli->close ();
       if ( $result->num_rows != 0 )
       {
-         return true;
+         return TRUE;
       }
       else
       {
-         return false;
+         return FALSE;
       }
    }
 
@@ -79,15 +79,15 @@ class vmApi
          $resultCount = mysqli_fetch_row ( $result )[ 0 ];
          if ( $resultCount > 0 )
          {
-            return true;
+            return TRUE;
          }
          else
          {
-            return false;
+            return FALSE;
          }
       }
 
-      return null;
+      return NULL;
    }
 
    /**
@@ -204,7 +204,7 @@ class vmApi
    public static function getVersionObsoleteHashArray ()
    {
       $currentProjectId = helper_get_current_project ();
-      $versions = version_get_all_rows_with_subs ( $currentProjectId, null, true );
+      $versions = version_get_all_rows_with_subs ( $currentProjectId, NULL, TRUE );
 
       $versionObsoleteHashArray = array ();
       foreach ( $versions as $version )
@@ -268,11 +268,11 @@ class vmApi
             ( !is_numeric ( $versionDateOrder ) )
          )
          {
-            return false;
+            return FALSE;
          }
       }
 
-      return true;
+      return TRUE;
    }
 
    /**
@@ -429,7 +429,7 @@ class vmApi
          else
          {
             $date = strtotime ( $date );
-            if ( $date === false )
+            if ( $date === FALSE )
             {
                trigger_error ( ERROR_INVALID_DATE_FORMAT, ERROR );
             }
@@ -502,7 +502,7 @@ class vmApi
     */
    public static function updateSingleValue ( $value, $constant )
    {
-      $actualValue = null;
+      $actualValue = NULL;
 
       if ( is_int ( $value ) )
       {
@@ -527,10 +527,16 @@ class vmApi
     */
    public static function getObsoleteValue ()
    {
-      $obsolete = false;
-      if ( $_GET[ 'obsolete' ] == 1 )
+      $getObsolete = NULL;
+      if ( isset( $_GET[ 'obsolete' ] ) )
       {
-         $obsolete = null;
+         $getObsolete = $_GET[ 'obsolete' ];
+      }
+      
+      $obsolete = FALSE;
+      if ( $getObsolete == 1 )
+      {
+         $obsolete = TRUE;
       }
 
       return $obsolete;
@@ -542,29 +548,20 @@ class vmApi
     * Return all versions for the specified project, including subprojects
     * @param int $p_project_id
     * @param int $p_released
-    * @param bool $p_obsolete
+    * @param int $p_obsolete
     * @param $sort
     * @return array
     */
-   public static function versionGetAllRowsWithSubsIndSort ( $p_project_id, $p_released = null, $p_obsolete = false, $sort = 'ddesc' )
+   public static function versionGetAllRowsWithSubsIndSort ( $p_project_id, $p_obsolete = FALSE, $sort = 'ddesc' )
    {
       $t_project_where = helper_project_specific_where ( $p_project_id );
 
       $t_param_count = 0;
       $t_query_params = array ();
 
-      if ( $p_released === null )
-      {
-         $t_released_where = '';
-      }
-      else
-      {
-         $c_released = db_prepare_int ( $p_released );
-         $t_released_where = "AND ( released = " . db_param ( $t_param_count++ ) . " )";
-         $t_query_params[] = $c_released;
-      }
+      $t_released_where = '';
 
-      if ( $p_obsolete === null )
+      if ( $p_obsolete )
       {
          $t_obsolete_where = '';
       }
@@ -575,7 +572,14 @@ class vmApi
          $t_query_params[] = $c_obsolete;
       }
 
-      $t_project_version_table = db_get_table ( 'mantis_project_version_table' );
+      if ( self::checkMantisIsActualVersion () )
+      {
+         $t_project_version_table = db_get_table ( 'project_version' );
+      }
+      else
+      {
+         $t_project_version_table = db_get_table ( 'mantis_project_version_table' );
+      }
 
       $query = /** @lang sql */
          "SELECT * FROM $t_project_version_table
@@ -599,7 +603,15 @@ class vmApi
             break;
       }
 
-      $result = db_query_bound ( $query, $t_query_params );
+      if ( self::checkMantisIsActualVersion () )
+      {
+         $result = db_query ( $query, $t_query_params );
+      }
+      else
+      {
+         $result = db_query_bound ( $query, $t_query_params );
+      }
+
       $count = db_num_rows ( $result );
       $rows = array ();
       for ( $i = 0; $i < $count; $i++ )
@@ -631,6 +643,16 @@ class vmApi
       {
          return mysqli_fetch_row ( $result )[ 0 ];
       }
-      return null;
+      return NULL;
+   }
+
+   /**
+    * return true, if act mantis version is used
+    *
+    * @return bool
+    */
+   public static function checkMantisIsActualVersion ()
+   {
+      return ( substr ( MANTIS_VERSION, 0, 3 ) == '1.3' );
    }
 }

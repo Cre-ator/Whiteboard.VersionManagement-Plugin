@@ -25,6 +25,18 @@ function processPage ()
 
 function processContent ()
 {
+   $getSort = NULL;
+   if ( isset( $_GET[ 'sort' ] ) )
+   {
+      $getSort = $_GET[ 'sort' ];
+   }
+
+   $getEdit = 0;
+   if ( isset( $_GET[ "edit" ] ) )
+   {
+      $getEdit = $_GET[ "edit" ];
+   }
+
    /** head */
    vmHtmlApi::htmlVersionViewHeadTable ();
 
@@ -33,18 +45,17 @@ function processContent ()
    vmHtmlApi::htmlVersionViewMainTableHead ();
    $currentProjectId = helper_get_current_project ();
    $userId = auth_get_current_user_id ();
-   $versions = vmApi::versionGetAllRowsWithSubsIndSort ( $currentProjectId, null, vmApi::getObsoleteValue (), $_GET[ 'sort' ] );
+   $versions = vmApi::versionGetAllRowsWithSubsIndSort ( $currentProjectId, vmApi::getObsoleteValue (), $getSort );
    $pluginReadAccessLevel = plugin_config_get ( 'r_access_level' );
    $pluginWriteAccessLevel = plugin_config_get ( 'access_level' );
-   $showFootTable = false;
-   if (0 != count ( $versions ) )
+   $showFootTable = FALSE;
+   if ( 0 != count ( $versions ) )
    {
       foreach ( $versions as $versionArray )
       {
          $version = new vmVersion( $versionArray[ 'id' ] );
          $versionProjectId = $version->getProjectId ();
          $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $versionProjectId, $userId );
-
          if ( ( $versionAccessLevel >= $pluginReadAccessLevel ) || ( user_is_administrator ( $userId ) ) )
          {
             vmHtmlApi::htmlVersionViewRowOpen ( $version );
@@ -60,7 +71,7 @@ function processContent ()
             if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
             {
                vmHtmlApi::htmlVersionViewActionColumn ( $version );
-               $showFootTable = true;
+               $showFootTable = TRUE;
             }
             else
             {
@@ -75,7 +86,7 @@ function processContent ()
       $versionAccessLevel = vmApi::getProjectUserAccessLevel ( $currentProjectId, $userId );
       if ( ( $versionAccessLevel >= $pluginWriteAccessLevel ) || ( user_is_administrator ( $userId ) ) )
       {
-         $showFootTable = true;
+         $showFootTable = TRUE;
       }
    }
    echo '</table>';
@@ -85,7 +96,7 @@ function processContent ()
    {
       vmHtmlApi::htmlVersionViewFootTable ();
    }
-   if ( $_GET[ "edit" ] == 1 )
+   if ( $getEdit == 1 )
    {
       echo '</form>';
    }

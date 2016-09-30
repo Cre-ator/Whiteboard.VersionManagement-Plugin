@@ -55,9 +55,9 @@ class vmVersion
     * vmVersion constructor.
     * @param null $versionId
     */
-   function __construct ( $versionId = null )
+   function __construct ( $versionId = NULL )
    {
-      if ( $versionId != null )
+      if ( $versionId != NULL )
       {
          $this->versionId = $versionId;
          $this->dbInitVersionById ();
@@ -225,12 +225,12 @@ class vmVersion
    public function triggerInsertIntoDb ()
    {
       if (
-         ( $this->projectId != null ) &&
+         ( $this->projectId != NULL ) &&
          is_numeric ( $this->projectId ) &&
-         ( $this->versionName != null ) &&
+         ( $this->versionName != NULL ) &&
          is_numeric ( $this->released ) &&
          is_numeric ( $this->obsolete ) &&
-         ( $this->dateOrder != null ) &&
+         ( $this->dateOrder != NULL ) &&
          is_numeric ( $this->dateOrder )
       )
       {
@@ -244,14 +244,14 @@ class vmVersion
    public function triggerUpdateInDb ()
    {
       if (
-         ( $this->versionId != null ) &&
+         ( $this->versionId != NULL ) &&
          is_numeric ( $this->versionId ) &&
-         ( $this->projectId != null ) &&
+         ( $this->projectId != NULL ) &&
          is_numeric ( $this->projectId ) &&
-         ( $this->versionName != null ) &&
+         ( $this->versionName != NULL ) &&
          is_numeric ( $this->released ) &&
          is_numeric ( $this->obsolete ) &&
-         ( $this->dateOrder != null ) &&
+         ( $this->dateOrder != NULL ) &&
          is_numeric ( $this->dateOrder )
       )
       {
@@ -265,7 +265,7 @@ class vmVersion
    public function triggerDeleteFromDb ()
    {
       if (
-         ( $this->versionId != null ) &&
+         ( $this->versionId != NULL ) &&
          is_numeric ( $this->versionId )
       )
       {
