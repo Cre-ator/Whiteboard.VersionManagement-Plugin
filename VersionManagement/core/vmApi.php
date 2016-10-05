@@ -154,7 +154,28 @@ class vmApi
     */
    public static function checkDMManagementPluginIsInstalled ()
    {
+      return ( ( plugin_is_installed ( 'DocumentManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'DocumentManagement' ) )
+         || ( plugin_is_installed ( 'SpecManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'SpecManagement' ) ) );
+   }
+
+   /**
+    * retrns true, if the documentmanagement plugin is installed
+    *
+    * @return bool
+    */
+   public static function checkDMPluginIsInstalled ()
+   {
       return plugin_is_installed ( 'DocumentManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'DocumentManagement' );
+   }
+
+   /**
+    * retrns true, if the specmanagement plugin is installed
+    *
+    * @return bool
+    */
+   public static function checkSMPluginIsInstalled ()
+   {
+      return plugin_is_installed ( 'SpecManagement' ) && file_exists ( config_get_global ( 'plugin_path' ) . 'SpecManagement' );
    }
 
    /**
@@ -326,7 +347,14 @@ class vmApi
          /** update version document type */
          if ( !empty( $postVersionDocumentType ) )
          {
-            require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
+            if ( self::checkDMPluginIsInstalled () )
+            {
+               require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
+            }
+            elseif ( self::checkSMPluginIsInstalled () )
+            {
+               require_once ( __DIR__ . '/../../SpecManagement/core/specmanagement_database_api.php' );
+            }
             $specmanagementDatabaseApi = new specmanagement_database_api();
             $versionProjectId = $version->getProjectId ();
             if ( strlen ( $versionDocumentType ) > 0 )
@@ -532,7 +560,7 @@ class vmApi
       {
          $getObsolete = $_GET[ 'obsolete' ];
       }
-      
+
       $obsolete = FALSE;
       if ( $getObsolete == 1 )
       {

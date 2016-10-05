@@ -268,7 +268,14 @@ class vmHtmlApi
     */
    public static function htmlVersionViewDocumentTypeColumn ( vmVersion $version )
    {
-      require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
+      if ( vmApi::checkDMPluginIsInstalled () )
+      {
+         require_once ( __DIR__ . '/../../DocumentManagement/core/specmanagement_database_api.php' );
+      }
+      elseif ( vmApi::checkSMPluginIsInstalled () )
+      {
+         require_once ( __DIR__ . '/../../SpecManagement/core/specmanagement_database_api.php' );
+      }
       $dManagementDbApi = new specmanagement_database_api();
 
       $getEdit = 0;
