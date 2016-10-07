@@ -16,7 +16,7 @@ echo '<br/>';
 echo '<form action="' . plugin_page ( 'config_update' ) . '" method="post">';
 echo '<table align="center" class="width50" cellspacing="1">';
 /** General configuration */
-vmHtmlApi::htmlConfigTableTitleRow ( 2, 'config_page_general' );
+echo '<tr><td class="form-title" colspan="2">' . plugin_lang_get ( 'menu_title' ) . ':&nbsp;' . plugin_lang_get ( 'config_page_general' ) . '</td></tr>';
 /** Access level */
 vmHtmlApi::htmlConfigTableRow ();
 echo '<td class="category">';
