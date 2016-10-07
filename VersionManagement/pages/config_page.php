@@ -14,7 +14,7 @@ echo '<link rel="stylesheet" href="plugins/VersionManagement/files/version_manag
 
 echo '<br/>';
 echo '<form action="' . plugin_page ( 'config_update' ) . '" method="post">';
-echo '<table align="center" class="width75" cellspacing="1">';
+echo '<table align="center" class="width50" cellspacing="1">';
 /** General configuration */
 vmHtmlApi::htmlConfigTableTitleRow ( 2, 'config_page_general' );
 /** Access level */
