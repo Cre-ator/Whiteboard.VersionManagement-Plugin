@@ -383,9 +383,10 @@ class vmHtmlApi
          $currentProjectId = helper_get_current_project ();
          $versions = version_get_all_rows_with_subs ( $currentProjectId, NULL, vmApi::getObsoleteValue () );
          $initialRowCount = ( count ( $versions ) );
+         $dminstalled = vmApi::checkDMManagementPluginIsInstalled ();
 
          echo '<td class="left">';
-         echo '<input type="button" value="+" onclick="add_version_row()" />&nbsp;';
+         echo '<input type="button" value="+" onclick="add_version_row(' . $dminstalled . ')" />&nbsp;';
          echo '<input type="button" value="-" onclick="del_version_row(' . $initialRowCount . ')" />&nbsp;';
          echo '</td>';
       }

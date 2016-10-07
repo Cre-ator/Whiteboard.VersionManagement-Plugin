@@ -4,7 +4,7 @@
 
 var newVersionCounter = 0;
 
-function add_version_row() {
+function add_version_row(dminstalled) {
     var table_id = "version_view";
     var table = document.getElementById(table_id);
     var rows = table.getElementsByTagName("tr").length;
@@ -36,7 +36,9 @@ function add_version_row() {
     tr.appendChild(td3);
     tr.appendChild(td4);
     tr.appendChild(td5);
-    tr.appendChild(td6);
+    if (dminstalled) {
+        tr.appendChild(td6);
+    }
 
     newVersionCounter++;
 }
