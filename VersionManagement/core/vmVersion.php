@@ -436,11 +436,19 @@ class vmVersion
    {
       $mysqli = vmApi::initializeDbConnection ();
 
+      // Get project ids for subprojects too to reach their affected bugs
+      $projectIds = array ( $this->projectId );
+      if ( config_get ( 'subprojects_inherit_versions' ) )
+      {
+         $projectIds = array_merge ( $projectIds, project_hierarchy_get_all_subprojects ( $this->projectId, true ) );
+      }
+      $projectIds = implode ( ',', $projectIds );
+
       $query = /** @lang sql */
          'SELECT id 
          FROM mantis_bug_table 
          WHERE ' . $versionType . ' = \'' . $this->versionOldName . '\'
-         AND project_id=' . $this->projectId;
+         AND ( project_id IN (' . $projectIds . ') )';
 
       $result = $mysqli->query ( $query );
       $mysqli->close ();
